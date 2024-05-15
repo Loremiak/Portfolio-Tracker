@@ -4,6 +4,7 @@ import roundToTwoDecimalPlaces from '../../helpers/roundToTwoDecimalPlaces';
 import Carousel from '../carousel/Carousel';
 import React from 'react';
 import { Datum, GlobalMarketData } from '../../services/types';
+import { CircularProgress } from '@mui/material';
 
 export const mockedBasicData = {
 	active_cryptocurrencies: 14015,
@@ -154,21 +155,39 @@ export const mockedBasicData = {
 	updated_at: 1713827466,
 };
 
-const BoxContainer: React.FC<{ coins: Datum[]; marketData: GlobalMarketData }> = ({ coins, marketData }) => {
-	console.log(coins, marketData);
+const BoxContainer: React.FC<{
+	coins: Datum[];
+	marketData: GlobalMarketData;
+	isCarouselDataLoading: boolean;
+	isMarketDataLoading: boolean;
+}> = ({ coins, marketData, isCarouselDataLoading, isMarketDataLoading }) => {
 	return (
 		<DataMarketBoxes>
 			<InfoContainer>
-				<Box
-					value={marketData.total_market_cap.usd}
-					information={`Kapitalizacja globalna ${roundToTwoDecimalPlaces(
-						marketData.market_cap_change_percentage_24h_usd
-					)}%`}
-				/>
-				<Box value={marketData.total_volume.usd} information='24 godzinny wolumen handlu' />
+				{isMarketDataLoading ? (
+					<LoadingContainer>
+						<CircularProgress size='200px' />
+					</LoadingContainer>
+				) : (
+					<>
+						<Box
+							value={marketData.total_market_cap.usd}
+							information={`Kapitalizacja globalna ${roundToTwoDecimalPlaces(
+								marketData.market_cap_change_percentage_24h_usd
+							)}%`}
+						/>
+						<Box value={marketData.total_volume.usd} information='24 godzinny wolumen handlu' />
+					</>
+				)}
 			</InfoContainer>
 			<CarouselContainer>
-				<Carousel coins={coins} />
+				{isCarouselDataLoading ? (
+					<LoadingContainer>
+						<CircularProgress size='200px' />
+					</LoadingContainer>
+				) : (
+					<Carousel coins={coins} />
+				)}
 			</CarouselContainer>
 		</DataMarketBoxes>
 	);
@@ -195,4 +214,12 @@ const CarouselContainer = styled.div`
 	flex: 2;
 	max-width: 900px;
 	padding: 1rem;
+`;
+
+const LoadingContainer = styled.div`
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 `;

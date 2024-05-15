@@ -20,9 +20,10 @@ const Footer = () => {
 export default Footer;
 
 const FooterContainer = styled.div`
-	margin-top: 4rem;
 	border: 2px solid gray;
 	padding: 1rem;
+	position: absolute;
+	width: 1234px;
 `;
 
 const InfoContainer = styled.div`

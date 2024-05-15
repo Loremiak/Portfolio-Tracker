@@ -4,6 +4,9 @@ import { mockedBasicData } from './box/BoxContainer';
 import handleBiggerValues from '../helpers/handleBiggerValues';
 import roundToTwoDecimalPlaces from '../helpers/roundToTwoDecimalPlaces';
 import Logo from './Logo';
+import { formatNumber } from '../helpers/formatNumber';
+
+// czy tutaj 2x strzał do api czy jakoś z home idzie wziąć dane
 
 const Navbar = () => {
 	return (
@@ -16,11 +19,11 @@ const Navbar = () => {
 							<Link to='/'>home</Link>
 						</li>
 						<li>
-							<Link to={'/portfolio'}>portfolio</Link>
+							<Link to='/portfolio'>portfolio</Link>
 						</li>
 						<li>lampka</li>
 						<li>
-							<Link to={'/login'}>login</Link>
+							<Link to='/login'>login</Link>
 						</li>
 					</MenuItemList>
 				</div>
@@ -30,10 +33,13 @@ const Navbar = () => {
 					<li>Waluty: {handleBiggerValues(mockedBasicData.active_cryptocurrencies)}</li>
 					<li>Giełdy: {handleBiggerValues(mockedBasicData.markets)}</li>
 					<li>
-						Kapitalizacja rynkowa: {handleBiggerValues(mockedBasicData.total_market_cap.usd)} USD{' '}
-						{roundToTwoDecimalPlaces(mockedBasicData.market_cap_change_percentage_24h_usd)}%
+						Kapitalizacja rynkowa: {formatNumber(mockedBasicData.total_market_cap.usd)} USD
+						<StyledSpan $isMarketCapChangePositive={mockedBasicData.market_cap_change_percentage_24h_usd > 0}>
+							{' '}
+							{roundToTwoDecimalPlaces(mockedBasicData.market_cap_change_percentage_24h_usd)}%
+						</StyledSpan>
 					</li>
-					<li>Wolumen: {handleBiggerValues(mockedBasicData.total_volume.usd)} USD</li>
+					<li>Wolumen: {formatNumber(mockedBasicData.total_volume.usd)} USD</li>
 				</BasicInfoList>
 			</BasicInfoContainer>
 		</>
@@ -66,6 +72,10 @@ const BasicInfoList = styled.ul`
 	list-style-type: none;
 	padding: 0.5rem;
 	margin: 0;
+`;
+
+const StyledSpan = styled.span<{ $isMarketCapChangePositive: boolean }>`
+	color: ${({ $isMarketCapChangePositive }) => ($isMarketCapChangePositive ? 'green' : 'red')};
 `;
 
 export default Navbar;

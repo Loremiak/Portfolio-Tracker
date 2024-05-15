@@ -17,9 +17,21 @@ export function useCryptocurrenciesList() {
 	return useQuery({
 		queryKey: ['cryptocurrenciesList'],
 		queryFn: async () => {
+			const response = await axios.get<Coins>(`${BASE_URL}/coins/markets?vs_currency=usd&per_page=10&page=1`);
+
+			return response.data;
+		},
+	});
+}
+
+export function useCryptocurrenciesListByIds(ids: string[]) {
+	return useQuery({
+		queryKey: ['cryptocurrenciesList', ids, { ids }],
+		queryFn: async () => {
 			const response = await axios.get<Coins>(
-				`${BASE_URL}/coins/markets?vs_currency=usd&per_page=10&page=1&x_cg_demo_api_key=${apiKey}`
+				`${BASE_URL}/coins/markets?vs_currency=usd&per_page=10&page=1&ids=${ids}`
 			);
+
 			return response.data;
 		},
 	});

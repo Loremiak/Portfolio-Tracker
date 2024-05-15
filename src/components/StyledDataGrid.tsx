@@ -1,4 +1,11 @@
-import { GridRowsProp, GridColDef, DataGrid, gridClasses } from '@mui/x-data-grid';
+import {
+	GridRowsProp,
+	GridColDef,
+	DataGrid,
+	gridClasses,
+	GridRowSelectionModel,
+	GridCallbackDetails,
+} from '@mui/x-data-grid';
 import styled from 'styled-components';
 import roundToTwoDecimalPlaces from '../helpers/roundToTwoDecimalPlaces';
 import handleBiggerValues from '../helpers/handleBiggerValues';
@@ -96,7 +103,13 @@ export const mockedMarketData = [
 	},
 ];
 
-const StyledDataGrid: React.FC<{ data: Coins }> = ({ data }) => {
+const StyledDataGrid: React.FC<{
+	data: Coins;
+	portfolioButtons?: boolean;
+	onRowSelectionModelChange?:
+		| ((rowSelectionModel: GridRowSelectionModel, details: GridCallbackDetails) => void)
+		| undefined;
+}> = ({ data, onRowSelectionModelChange }) => {
 	const rows: GridRowsProp = data.map(
 		({
 			id,
@@ -181,6 +194,8 @@ const StyledDataGrid: React.FC<{ data: Coins }> = ({ data }) => {
 				checkboxSelection
 				pageSizeOptions={[]}
 				hideFooterPagination
+				disableRowSelectionOnClick
+				onRowSelectionModelChange={onRowSelectionModelChange}
 				sx={{
 					[`& .${gridClasses.cell}:focus, & .${gridClasses.cell}:focus-within`]: {
 						outline: 'none',
@@ -200,6 +215,7 @@ const StyledDataGrid: React.FC<{ data: Coins }> = ({ data }) => {
 export default StyledDataGrid;
 
 const DataGridContainer = styled.div`
+	margin: 1rem 0 3rem 0;
 	height: 300px;
 	width: 100%;
 `;

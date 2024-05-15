@@ -2,21 +2,57 @@ import styled from 'styled-components';
 import StyledDataGrid, { mockedMarketData } from '../components/StyledDataGrid';
 import BoxContainer from '../components/box/BoxContainer';
 import { useCryptocurrenciesList, useGlobalMarketData, useTrendingCoins } from '../services/api';
+import { Button } from '@mui/material';
+import { GridRowSelectionModel } from '@mui/x-data-grid';
+import { useState } from 'react';
+import { setSelectedCoins } from '../store/coinsSlice';
+import { useAppDispatch } from '../hooks/useAppDispatch';
 
 const Home = () => {
-	const { data: trendingData } = useTrendingCoins();
+	const [coins, setCoins] = useState<GridRowSelectionModel>([]);
+
+	const dispatch = useAppDispatch();
+
+	const { data: trendingData, isLoading: isCarouselDataLoading } = useTrendingCoins();
 
 	// const { data: CoinList } = useCryptocurrenciesList();
 
-	const { data: globalMarketData } = useGlobalMarketData();
+	const { data: globalMarketData, isLoading: isMarketDataLoading } = useGlobalMarketData();
 
 	return (
 		<div>
 			<StyledHeader>Ceny kryptowalut według kapitalizacji rynkowej</StyledHeader>
 			{trendingData && globalMarketData ? (
-				<BoxContainer coins={trendingData.coins} marketData={globalMarketData.data} />
+				<BoxContainer
+					coins={trendingData.coins}
+					marketData={globalMarketData.data}
+					isCarouselDataLoading={isCarouselDataLoading}
+					isMarketDataLoading={isMarketDataLoading}
+				/>
 			) : null}
-			{mockedMarketData ? <StyledDataGrid data={mockedMarketData} /> : null}
+			{coins.length > 0 ? (
+				<Button
+					variant='outlined'
+					onClick={() => {
+						console.log('click');
+						dispatch(setSelectedCoins(coins));
+					}}>
+					Dodaj zaznaczone waluty do portfolio ({coins.length})
+				</Button>
+			) : (
+				<Button variant='outlined' disabled>
+					Zaznacz dowolne waluty aby dodać je do portfolio
+				</Button>
+			)}
+			{mockedMarketData ? (
+				<StyledDataGrid
+					data={mockedMarketData}
+					onRowSelectionModelChange={selected => {
+						setCoins(selected);
+						console.log(selected);
+					}}
+				/>
+			) : null}
 		</div>
 	);
 };

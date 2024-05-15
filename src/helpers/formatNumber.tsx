@@ -1,17 +1,16 @@
-export function formatNumber(value: number) {
-	let formattedValue;
-	if (value >= 1000000000) {
-		formattedValue =
-			(value / 1000000000).toLocaleString('en-US', { style: 'decimal', minimumFractionDigits: 3 }) + ' mld USD';
-	} else if (value >= 1000000000000) {
-		formattedValue =
-			(value / 1000000000000).toLocaleString('en-US', { style: 'decimal', minimumFractionDigits: 3 }) + ' bln USD';
-	} else {
-		formattedValue = value.toLocaleString('en-US') + ' USD';
+export function formatNumber(num) {
+	const suffixes = ['', 'tys.', 'mln', 'mld', 'bln']; // Sufiksy dla kolejnych wielkości
+
+	// Dzielenie liczby przez tysiące, aż będzie mniejsza niż tysiąc lub dojdzie do ostatniego sufiksu
+	let i = 0;
+	while (num >= 1000 && i < suffixes.length - 1) {
+		num /= 1000;
+		i++;
 	}
-	// Dodajemy warunek sprawdzający, czy wartość jest bliska granicy biliona i jeśli tak, zaokrąglamy do "1 bln"
-	if (value >= 999500000000 && value < 1000500000000) {
-		formattedValue = '1 bln USD';
-	}
-	return formattedValue;
+
+	// Zaokrąglenie liczby do dwóch miejsc po przecinku
+	num = Math.round(num * 100) / 100;
+
+	// Zwrócenie liczby z odpowiednim sufiksem
+	return num.toString() + ' ' + suffixes[i];
 }

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import handleBiggerValues from '../../helpers/handleBiggerValues';
+import { formatNumber } from '../../helpers/formatNumber';
 
 type BoxProps = {
 	value: number;
@@ -9,7 +9,7 @@ type BoxProps = {
 const Box = ({ value, information }: BoxProps) => {
 	return (
 		<BoxContainer>
-			<p>{handleBiggerValues(value)} USD</p>
+			<p>{formatNumber(value)} USD</p>
 			<p>{information}</p>
 		</BoxContainer>
 	);

@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import StyledDataGrid, { mockedMarketData } from '../components/StyledDataGrid';
 import BoxContainer from '../components/box/BoxContainer';
 import { useCryptocurrenciesList, useGlobalMarketData, useTrendingCoins } from '../services/api';
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { GridRowSelectionModel } from '@mui/x-data-grid';
 import { useState } from 'react';
 import { setSelectedCoins } from '../store/coinsSlice';
@@ -24,8 +24,8 @@ const Home = () => {
 			<StyledHeader>Ceny kryptowalut według kapitalizacji rynkowej</StyledHeader>
 			{trendingData && globalMarketData ? (
 				<BoxContainer
-					coins={trendingData.coins}
-					marketData={globalMarketData.data}
+					coins={trendingData}
+					marketData={globalMarketData}
 					isCarouselDataLoading={isCarouselDataLoading}
 					isMarketDataLoading={isMarketDataLoading}
 				/>
@@ -40,9 +40,9 @@ const Home = () => {
 					Dodaj zaznaczone waluty do portfolio ({coins.length})
 				</Button>
 			) : (
-				<Button variant='outlined' disabled>
+				<Typography variant='h6' color='gray'>
 					Zaznacz dowolne waluty aby dodać je do portfolio
-				</Button>
+				</Typography>
 			)}
 			{mockedMarketData ? (
 				<StyledDataGrid

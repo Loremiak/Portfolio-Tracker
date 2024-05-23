@@ -42,7 +42,7 @@ export function useTrendingCoins() {
 		queryKey: ['trendingCoins'],
 		queryFn: async () => {
 			const response = await axios.get<TrendingCoinsData>(`${BASE_URL}/search/trending`);
-			return response.data;
+			return response.data.coins;
 		},
 	});
 }
@@ -52,7 +52,7 @@ export function useGlobalMarketData() {
 		queryKey: ['globalMarketData'],
 		queryFn: async () => {
 			const response = await axios.get<DataMarket>(`${BASE_URL}/global`);
-			return response.data;
+			return response.data.data;
 		},
 	});
 }

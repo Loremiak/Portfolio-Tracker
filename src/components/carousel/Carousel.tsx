@@ -5,8 +5,9 @@ import 'slick-carousel/slick/slick-theme.css';
 import roundToTwoDecimalPlaces from '../../helpers/roundToTwoDecimalPlaces';
 import handleBiggerValues from '../../helpers/handleBiggerValues';
 import { TrendingCoinsData } from '../../services/types';
+import React from 'react';
 
-const Carousel = ({ coins }: TrendingCoinsData) => {
+const Carousel: React.FC<TrendingCoinsData> = ({ coins }) => {
 	const settings = {
 		speed: 1500,
 		slidesToShow: 3,

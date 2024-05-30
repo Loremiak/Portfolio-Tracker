@@ -51,6 +51,7 @@ const Home = () => {
 						setCoins(selected);
 						console.log(selected);
 					}}
+					isPortfolioView={false}
 				/>
 			) : null}
 		</div>

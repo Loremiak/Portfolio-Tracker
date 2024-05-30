@@ -11,6 +11,9 @@ import roundToTwoDecimalPlaces from '../helpers/roundToTwoDecimalPlaces';
 import handleBiggerValues from '../helpers/handleBiggerValues';
 import { Link } from 'react-router-dom';
 import { Coins } from '../services/types';
+import { Button } from '@mui/material';
+import { useState } from 'react';
+import PortfolioHandleModal from './modals/PortfolioHandleModal';
 
 export const mockedMarketData = [
 	{
@@ -105,11 +108,13 @@ export const mockedMarketData = [
 
 const StyledDataGrid: React.FC<{
 	data: Coins;
-	portfolioButtons?: boolean;
 	onRowSelectionModelChange?:
 		| ((rowSelectionModel: GridRowSelectionModel, details: GridCallbackDetails) => void)
 		| undefined;
-}> = ({ data, onRowSelectionModelChange }) => {
+	isPortfolioView: boolean;
+}> = ({ data, onRowSelectionModelChange, isPortfolioView }) => {
+	const [openModal, setOpenModal] = useState(false);
+
 	const rows: GridRowsProp = data.map(
 		({
 			id,
@@ -165,7 +170,7 @@ const StyledDataGrid: React.FC<{
 		{
 			field: 'dayChangeValue',
 			headerName: '24h',
-			width: 150,
+			width: 100,
 			resizable: false,
 			disableColumnMenu: true,
 			renderCell: params => (
@@ -175,20 +180,50 @@ const StyledDataGrid: React.FC<{
 			),
 		},
 		{ field: 'totalVolume', headerName: 'Wolumen 24h', width: 200, resizable: false, disableColumnMenu: true },
-		{ field: 'marketCap', headerName: 'Kapitalizacja rynkowa', width: 250, resizable: false, disableColumnMenu: true },
+		{ field: 'marketCap', headerName: 'Kapitalizacja rynkowa', width: 210, resizable: false, disableColumnMenu: true },
 		{
 			field: 'lastSevenDays',
 			headerName: 'Ostatnie 7 dni',
-			width: 200,
+			width: 170,
 			resizable: false,
 			disableColumnMenu: true,
 			sortable: false,
+		},
+		{
+			field: 'addValue',
+			headerName: 'Dodaj',
+			width: 60,
+			resizable: false,
+			disableColumnMenu: true,
+			sortable: false,
+			renderCell: params => {
+				console.log(params.id);
+				return (
+					<>
+						<Button onClick={() => setOpenModal(true)}>+</Button>
+						<PortfolioHandleModal open={openModal} onClose={() => setOpenModal(false)} name={params.id} />
+					</>
+				);
+			},
+		},
+		{
+			field: 'removeValue',
+			headerName: 'Usuń',
+			width: 60,
+			resizable: false,
+			disableColumnMenu: true,
+			sortable: false,
+			renderCell: () => <Button>-</Button>,
 		},
 	];
 
 	return (
 		<DataGridContainer>
 			<DataGrid
+				columnVisibilityModel={{
+					addValue: isPortfolioView,
+					removeValue: isPortfolioView,
+				}}
 				rows={rows}
 				columns={columns}
 				checkboxSelection

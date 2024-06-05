@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import roundToTwoDecimalPlaces from '../helpers/roundToTwoDecimalPlaces';
 import handleBiggerValues from '../helpers/handleBiggerValues';
 import { Link } from 'react-router-dom';
-import { Coins } from '../services/types';
+import { Coins, Transaction } from '../services/types';
 import { Button } from '@mui/material';
 import { useState } from 'react';
 import PortfolioHandleModal from './modals/PortfolioHandleModal';
@@ -112,8 +112,21 @@ const StyledDataGrid: React.FC<{
 		| ((rowSelectionModel: GridRowSelectionModel, details: GridCallbackDetails) => void)
 		| undefined;
 	isPortfolioView: boolean;
-}> = ({ data, onRowSelectionModelChange, isPortfolioView }) => {
+	onTransactionSubmit?: (coin: string, amount: number, price: number, isAddition?: boolean) => void;
+	transactions?: Transaction[];
+}> = ({ data, onRowSelectionModelChange, isPortfolioView, onTransactionSubmit, transactions }) => {
 	const [openModal, setOpenModal] = useState(false);
+	const [selectedCoin, setSelectedCoin] = useState<string | null>(null);
+	const [isAdding, setIsAdding] = useState(true);
+
+	// const getHoldings = (coin: string) => {
+	// 	const coinTransactions = (transactions ? transactions : []).filter(transaction => transaction.coin === coin);
+	// 	const totalAmount = coinTransactions.reduce((total, transaction) => total + transaction.amount, 0);
+	// 	const currentCoinData = data.find(c => c.id === coin);
+	// 	const currentValue = currentCoinData ? totalAmount * currentCoinData.current_price : 0;
+
+	// 	return { totalAmount, currentValue };
+	// };
 
 	const rows: GridRowsProp = data.map(
 		({
@@ -126,17 +139,27 @@ const StyledDataGrid: React.FC<{
 			price_change_percentage_24h,
 			total_volume,
 			market_cap,
-		}) => ({
-			id,
-			col1: market_cap_rank,
-			image,
-			nameWithSymbol: `${name} ${symbol.toLocaleUpperCase()}`,
-			currentPrice: `${handleBiggerValues(current_price)} USD`,
-			dayChangeValue: roundToTwoDecimalPlaces(price_change_percentage_24h),
-			totalVolume: `${handleBiggerValues(total_volume)} USD`,
-			marketCap: `${handleBiggerValues(market_cap)} USD`,
-			lastSevenDays: name,
-		})
+		}) => {
+			const transaction = (transactions ? transactions : []).find(t => t.coin === id);
+			// const holdings = getHoldings(id);
+			console.log('holding', transaction);
+
+			return {
+				id,
+				col1: market_cap_rank,
+				image,
+				nameWithSymbol: `${name} ${symbol.toLocaleUpperCase()}`,
+				currentPrice: `${handleBiggerValues(current_price)} USD`,
+				dayChangeValue: roundToTwoDecimalPlaces(price_change_percentage_24h),
+				totalVolume: `${handleBiggerValues(total_volume)} USD`,
+				marketCap: `${handleBiggerValues(market_cap)} USD`,
+				lastSevenDays: name,
+				// totalAmount: handleBiggerValues(holdings.totalAmount),
+				// currentValue: `${holdings.currentValue.toFixed(2)} USD`,
+				totalAmount: transaction ? transaction.amount : 0,
+				currentValue: transaction ? `${handleBiggerValues(transaction.amount * current_price)} USD` : '0 USD',
+			};
+		}
 	);
 
 	const columns: GridColDef[] = [
@@ -144,7 +167,7 @@ const StyledDataGrid: React.FC<{
 		{
 			field: 'image',
 			headerName: '',
-			width: 30,
+			width: 25,
 			resizable: false,
 			hideSortIcons: true,
 			disableColumnMenu: true,
@@ -155,7 +178,7 @@ const StyledDataGrid: React.FC<{
 		{
 			field: 'nameWithSymbol',
 			headerName: 'Waluta',
-			width: 150,
+			width: 130,
 			resizable: false,
 			disableColumnMenu: true,
 			renderCell: params => <StyledLink to={`/coin-details/${params.id}`}>{params.value}</StyledLink>,
@@ -163,14 +186,14 @@ const StyledDataGrid: React.FC<{
 		{
 			field: 'currentPrice',
 			headerName: 'Kurs',
-			width: 150,
+			width: 120,
 			resizable: false,
 			disableColumnMenu: true,
 		},
 		{
 			field: 'dayChangeValue',
 			headerName: '24h',
-			width: 100,
+			width: 80,
 			resizable: false,
 			disableColumnMenu: true,
 			renderCell: params => (
@@ -190,6 +213,20 @@ const StyledDataGrid: React.FC<{
 			sortable: false,
 		},
 		{
+			field: 'totalAmount',
+			headerName: 'Ilość',
+			width: 70,
+			resizable: false,
+			disableColumnMenu: true,
+		},
+		{
+			field: 'currentValue',
+			headerName: 'Wartość',
+			width: 125,
+			resizable: false,
+			disableColumnMenu: true,
+		},
+		{
 			field: 'addValue',
 			headerName: 'Dodaj',
 			width: 60,
@@ -200,8 +237,26 @@ const StyledDataGrid: React.FC<{
 				console.log(params.id);
 				return (
 					<>
-						<Button onClick={() => setOpenModal(true)}>+</Button>
-						<PortfolioHandleModal open={openModal} onClose={() => setOpenModal(false)} name={params.id} />
+						<Button
+							onClick={() => {
+								console.log('params.row.id', params.row.id);
+								setSelectedCoin(params.row.id);
+								setOpenModal(true);
+							}}>
+							+
+						</Button>
+						<PortfolioHandleModal
+							open={openModal}
+							onClose={() => setOpenModal(false)}
+							coin={selectedCoin || ''}
+							onSubmit={(amount, price) => {
+								if (selectedCoin && onTransactionSubmit) {
+									onTransactionSubmit(selectedCoin, amount, price);
+									console.log(selectedCoin, amount, price);
+								}
+								setOpenModal(false);
+							}}
+						/>
 					</>
 				);
 			},
@@ -223,6 +278,9 @@ const StyledDataGrid: React.FC<{
 				columnVisibilityModel={{
 					addValue: isPortfolioView,
 					removeValue: isPortfolioView,
+					totalAmount: isPortfolioView,
+					currentValue: isPortfolioView,
+					lastSevenDays: !isPortfolioView,
 				}}
 				rows={rows}
 				columns={columns}

@@ -29,7 +29,7 @@ export function useCryptocurrenciesListByIds(ids: string[]) {
 		queryKey: ['cryptocurrenciesList', ids, { ids }],
 		queryFn: async () => {
 			const response = await axios.get<Coins>(
-				`${BASE_URL}/coins/markets?vs_currency=usd&per_page=10&page=1&ids=${ids}`
+				`${BASE_URL}/coins/markets?vs_currency=usd&per_page=10&page=1&ids=${ids}&x_cg_demo_api_key=${apiKey}`
 			);
 
 			return response.data;

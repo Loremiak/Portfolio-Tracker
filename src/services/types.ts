@@ -303,3 +303,9 @@ export type ChartData = {
 	market_caps?: number[][];
 	total_volumes?: number[][];
 };
+
+export type Transaction = {
+	coin: string;
+	amount: number;
+	price: number;
+};

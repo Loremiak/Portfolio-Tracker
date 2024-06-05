@@ -1,6 +1,5 @@
 import { Button, TextField, Typography } from '@mui/material';
 import styled from 'styled-components';
-import Bitcoin from '../assets/bitcoin.jpeg';
 import { useNavigate } from 'react-router-dom';
 
 type AuthProps = {

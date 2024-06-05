@@ -10,6 +10,7 @@ import { GridRowSelectionModel } from '@mui/x-data-grid';
 import { compareArrays } from '../helpers/compareArrays';
 import ConfirmModal from '../components/modals/ConfirmModal';
 import { Link } from 'react-router-dom';
+import { Transaction } from '../services/types';
 
 // const mockedBTCETH = [
 // 	{
@@ -77,13 +78,14 @@ import { Link } from 'react-router-dom';
 const Portfolio = () => {
 	const [coinsToDelete, setCoinsToDelete] = useState<GridRowSelectionModel>([]);
 	const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+	const [transactions, setTransactions] = useState<Transaction[]>([]);
 
 	const dispatch = useAppDispatch();
 
 	const selectedCoinsSelector = useAppSelector(selectedCoins);
 	console.log(selectedCoinsSelector);
 
-	const { data: portfolioCoins, isError, isRefetchError } = useCryptocurrenciesListByIds(selectedCoinsSelector);
+	const { data: portfolioCoins } = useCryptocurrenciesListByIds(selectedCoinsSelector);
 
 	console.log('coinsToDelete', coinsToDelete);
 
@@ -94,6 +96,28 @@ const Portfolio = () => {
 		} else {
 			dispatch(setSelectedCoins([]));
 		}
+	};
+
+	const handleTransactionSubmit = (coin: string, amount: number, price: number) => {
+		setTransactions([...transactions, { coin, amount, price }]);
+	};
+
+	const calculateTotalValue = () => {
+		return transactions.reduce((total, transaction) => {
+			const coin = (portfolioCoins ? portfolioCoins : []).find(c => {
+				console.log(c, transaction);
+				return c.id === transaction.coin;
+			});
+			if (coin) {
+				total += transaction.amount * coin.current_price;
+			}
+
+			return total;
+		}, 0);
+	};
+
+	const calculateTotalSpent = () => {
+		return transactions.reduce((total, transaction) => total + transaction.amount * transaction.price, 0);
 	};
 
 	return (
@@ -109,6 +133,11 @@ const Portfolio = () => {
 			<h1>Twoje portfolio</h1>
 			{portfolioCoins && selectedCoinsSelector.length > 0 ? (
 				<>
+					<div>
+						<p>Suma wydatków: {calculateTotalSpent().toFixed(2)} USD</p>
+						<p>Obecne saldo: {calculateTotalValue().toFixed(2)} USD</p>
+						<p>Całkowity zysk/strata: {calculateTotalValue() - calculateTotalSpent()} USD</p>
+					</div>
 					<ButtonsContainer>
 						<Button variant='outlined' disabled={!coinsToDelete.length} onClick={() => setIsConfirmModalOpen(true)}>
 							Usuń zaznaczone waluty
@@ -130,12 +159,11 @@ const Portfolio = () => {
 						}}
 						data={portfolioCoins}
 						isPortfolioView={true}
+						onTransactionSubmit={handleTransactionSubmit}
+						transactions={transactions}
 					/>
 				</>
 			) : (
-				// <MissingPortfolioCoins>
-				// 	{isError || isRefetchError ? 'error' : <img width={'300px'} src={Bitcoin} alt='btc' />}
-				// </MissingPortfolioCoins>
 				<Link to='/'>Udaj się na stronę główną aby dodać wybrane waluty do portfolio</Link>
 			)}
 		</PortfolioContainer>
@@ -158,12 +186,12 @@ const ButtonsContainer = styled.div`
 	gap: 2rem;
 `;
 
-const MissingPortfolioCoins = styled.div`
-	width: 100%;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	height: 300px;
-`;
+// const MissingPortfolioCoins = styled.div`
+// 	width: 100%;
+// 	display: flex;
+// 	align-items: center;
+// 	justify-content: center;
+// 	height: 300px;
+// `;
 
 export default Portfolio;

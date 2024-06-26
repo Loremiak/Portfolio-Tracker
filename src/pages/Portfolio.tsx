@@ -76,38 +76,58 @@ import { Transaction } from '../services/types';
 // ];
 
 const Portfolio = () => {
+	const dispatch = useAppDispatch();
+	const selectedCoinsSelector = useAppSelector(selectedCoins);
+
+	const { data: portfolioCoins } = useCryptocurrenciesListByIds(selectedCoinsSelector);
+
 	const [coinsToDelete, setCoinsToDelete] = useState<GridRowSelectionModel>([]);
 	const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 	const [transactions, setTransactions] = useState<Transaction[]>([]);
-
-	const dispatch = useAppDispatch();
-
-	const selectedCoinsSelector = useAppSelector(selectedCoins);
-	console.log(selectedCoinsSelector);
-
-	const { data: portfolioCoins } = useCryptocurrenciesListByIds(selectedCoinsSelector);
 
 	console.log('coinsToDelete', coinsToDelete);
 
 	const onConfirmModal = () => {
 		if (coinsToDelete.length) {
 			const uniqueElements = compareArrays(selectedCoinsSelector, coinsToDelete as string[]);
+			console.log('uniqueElements', uniqueElements, coinsToDelete);
 			dispatch(setSelectedCoins(uniqueElements));
 		} else {
 			dispatch(setSelectedCoins([]));
 		}
+
+		setIsConfirmModalOpen(false);
+		setCoinsToDelete([]);
 	};
 
 	const handleTransactionSubmit = (coin: string, amount: number, price: number) => {
-		setTransactions([...transactions, { coin, amount, price }]);
+		setTransactions(prevTransactions => {
+			const existingTransaction = prevTransactions.find(transaction => transaction.coin === coin);
+
+			if (existingTransaction) {
+				return prevTransactions.map(transaction =>
+					transaction.coin === coin
+						? {
+								...transaction,
+								amount: transaction.amount + amount,
+								price: (transaction.amount * transaction.price + amount * price) / (transaction.amount + amount),
+						}
+						: transaction
+				);
+			} else {
+				return [...prevTransactions, { coin, amount, price }];
+			}
+		});
+	};
+
+	const handleTransactionRemove = (coin: string) => {
+		setTransactions(transactions.filter(transaction => transaction.coin !== coin));
 	};
 
 	const calculateTotalValue = () => {
 		return transactions.reduce((total, transaction) => {
-			const coin = (portfolioCoins ? portfolioCoins : []).find(c => {
-				console.log(c, transaction);
-				return c.id === transaction.coin;
-			});
+			const coin = (portfolioCoins ? portfolioCoins : []).find(c => c.id === transaction.coin);
+
 			if (coin) {
 				total += transaction.amount * coin.current_price;
 			}
@@ -142,7 +162,11 @@ const Portfolio = () => {
 						<Button variant='outlined' disabled={!coinsToDelete.length} onClick={() => setIsConfirmModalOpen(true)}>
 							Usuń zaznaczone waluty
 						</Button>
-						<Button variant='outlined' onClick={() => setIsConfirmModalOpen(true)}>
+						<Button
+							variant='outlined'
+							onClick={() => {
+								setIsConfirmModalOpen(true);
+							}}>
 							Usuń wszystkie waluty
 						</Button>
 						<ConfirmModal
@@ -153,13 +177,11 @@ const Portfolio = () => {
 						/>
 					</ButtonsContainer>
 					<StyledDataGrid
-						onRowSelectionModelChange={selected => {
-							console.log(selected);
-							setCoinsToDelete(selected);
-						}}
+						onRowSelectionModelChange={selected => setCoinsToDelete(selected)}
 						data={portfolioCoins}
 						isPortfolioView={true}
 						onTransactionSubmit={handleTransactionSubmit}
+						onTransactionRemove={handleTransactionRemove}
 						transactions={transactions}
 					/>
 				</>
@@ -172,6 +194,7 @@ const Portfolio = () => {
 
 const PortfolioContainer = styled.div`
 	margin-bottom: 3rem;
+	max-width: 100%;
 `;
 
 const StyledInfoContainer = styled.div`

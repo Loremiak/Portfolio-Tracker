@@ -22,8 +22,8 @@ export default Footer;
 const FooterContainer = styled.div`
 	border: 2px solid gray;
 	padding: 1rem;
-	position: absolute;
-	width: 1234px;
+	width: 100%;
+	box-sizing: border-box;
 `;
 
 const InfoContainer = styled.div`

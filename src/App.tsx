@@ -6,26 +6,42 @@ import Footer from './components/Footer';
 import Portfolio from './pages/Portfolio';
 import CoinDetails from './pages/CoinDetails';
 import AuthView from './pages/AuthView';
+import styled from 'styled-components';
 
 function App() {
 	const location = useLocation();
 	const isAuthPage = location.pathname === '/login';
 
 	return (
-		<div className='App'>
+		<AppContainer>
 			{!isAuthPage ? <Navbar /> : null}
-			<Routes>
-				<Route path='/' element={<Outlet />}>
-					<Route index element={<Home />} />
-					<Route path='/portfolio' element={<Portfolio />} />
-					<Route path='/coin-details/:id' element={<CoinDetails />} />
-					<Route path='/login' element={<AuthView />} />
-					<Route path='*' element={<>Error</>} />
-				</Route>
-			</Routes>
+			<Content>
+				<Routes>
+					<Route path='/' element={<Outlet />}>
+						<Route index element={<Home />} />
+						<Route path='/portfolio' element={<Portfolio />} />
+						<Route path='/coin-details/:id' element={<CoinDetails />} />
+						<Route path='/login' element={<AuthView />} />
+						<Route path='*' element={<>Error</>} />
+					</Route>
+				</Routes>
+			</Content>
 			{!isAuthPage ? <Footer /> : null}
-		</div>
+		</AppContainer>
 	);
 }
+
+const AppContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+	max-width: 1270px;
+	margin: 0 auto;
+	position: relative;
+`;
+
+const Content = styled.div`
+	flex: 1;
+`;
 
 export default App;

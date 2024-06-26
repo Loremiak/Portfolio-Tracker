@@ -15,9 +15,11 @@ const Home = () => {
 
 	const { data: trendingData, isLoading: isCarouselDataLoading } = useTrendingCoins();
 
-	// const { data: CoinList } = useCryptocurrenciesList();
+	const { data: coinList } = useCryptocurrenciesList();
 
 	const { data: globalMarketData, isLoading: isMarketDataLoading } = useGlobalMarketData();
+
+	console.log(mockedMarketData);
 
 	return (
 		<div>
@@ -44,9 +46,9 @@ const Home = () => {
 					Zaznacz dowolne waluty aby dodać je do portfolio
 				</Typography>
 			)}
-			{mockedMarketData ? (
+			{coinList ? (
 				<StyledDataGrid
-					data={mockedMarketData}
+					data={coinList}
 					onRowSelectionModelChange={selected => {
 						setCoins(selected);
 						console.log(selected);

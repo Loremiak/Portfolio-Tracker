@@ -112,21 +112,17 @@ const StyledDataGrid: React.FC<{
 		| ((rowSelectionModel: GridRowSelectionModel, details: GridCallbackDetails) => void)
 		| undefined;
 	isPortfolioView: boolean;
-	onTransactionSubmit?: (coin: string, amount: number, price: number, isAddition?: boolean) => void;
+	onTransactionSubmit?: (coin: string, amount: number, price: number) => void;
+	onTransactionRemove?: (coin: string) => void;
 	transactions?: Transaction[];
-}> = ({ data, onRowSelectionModelChange, isPortfolioView, onTransactionSubmit, transactions }) => {
+}> = ({ data, onRowSelectionModelChange, isPortfolioView, onTransactionSubmit, onTransactionRemove, transactions }) => {
 	const [openModal, setOpenModal] = useState(false);
-	const [selectedCoin, setSelectedCoin] = useState<string | null>(null);
-	const [isAdding, setIsAdding] = useState(true);
+	const [selectedCoin, setSelectedCoin] = useState<string>('');
 
-	// const getHoldings = (coin: string) => {
-	// 	const coinTransactions = (transactions ? transactions : []).filter(transaction => transaction.coin === coin);
-	// 	const totalAmount = coinTransactions.reduce((total, transaction) => total + transaction.amount, 0);
-	// 	const currentCoinData = data.find(c => c.id === coin);
-	// 	const currentValue = currentCoinData ? totalAmount * currentCoinData.current_price : 0;
-
-	// 	return { totalAmount, currentValue };
-	// };
+	const handleAddButtonClick = (rowId: string) => {
+		setSelectedCoin(rowId);
+		setOpenModal(true);
+	};
 
 	const rows: GridRowsProp = data.map(
 		({
@@ -141,8 +137,6 @@ const StyledDataGrid: React.FC<{
 			market_cap,
 		}) => {
 			const transaction = (transactions ? transactions : []).find(t => t.coin === id);
-			// const holdings = getHoldings(id);
-			console.log('holding', transaction);
 
 			return {
 				id,
@@ -154,8 +148,6 @@ const StyledDataGrid: React.FC<{
 				totalVolume: `${handleBiggerValues(total_volume)} USD`,
 				marketCap: `${handleBiggerValues(market_cap)} USD`,
 				lastSevenDays: name,
-				// totalAmount: handleBiggerValues(holdings.totalAmount),
-				// currentValue: `${holdings.currentValue.toFixed(2)} USD`,
 				totalAmount: transaction ? transaction.amount : 0,
 				currentValue: transaction ? `${handleBiggerValues(transaction.amount * current_price)} USD` : '0 USD',
 			};
@@ -234,29 +226,14 @@ const StyledDataGrid: React.FC<{
 			disableColumnMenu: true,
 			sortable: false,
 			renderCell: params => {
-				console.log(params.id);
 				return (
 					<>
 						<Button
 							onClick={() => {
-								console.log('params.row.id', params.row.id);
-								setSelectedCoin(params.row.id);
-								setOpenModal(true);
+								handleAddButtonClick(params.row.id);
 							}}>
 							+
 						</Button>
-						<PortfolioHandleModal
-							open={openModal}
-							onClose={() => setOpenModal(false)}
-							coin={selectedCoin || ''}
-							onSubmit={(amount, price) => {
-								if (selectedCoin && onTransactionSubmit) {
-									onTransactionSubmit(selectedCoin, amount, price);
-									console.log(selectedCoin, amount, price);
-								}
-								setOpenModal(false);
-							}}
-						/>
 					</>
 				);
 			},
@@ -268,40 +245,71 @@ const StyledDataGrid: React.FC<{
 			resizable: false,
 			disableColumnMenu: true,
 			sortable: false,
-			renderCell: () => <Button>-</Button>,
+			renderCell: params => {
+				const transaction = (transactions ? transactions : []).find(t => t.coin === params.row.id);
+
+				return (
+					<>
+						<Button
+							onClick={() => {
+								if (onTransactionRemove) {
+									onTransactionRemove(params.row.id);
+								}
+							}}
+							disabled={!transaction || transaction.amount <= 0}>
+							-
+						</Button>
+					</>
+				);
+			},
 		},
 	];
 
 	return (
-		<DataGridContainer>
-			<DataGrid
-				columnVisibilityModel={{
-					addValue: isPortfolioView,
-					removeValue: isPortfolioView,
-					totalAmount: isPortfolioView,
-					currentValue: isPortfolioView,
-					lastSevenDays: !isPortfolioView,
-				}}
-				rows={rows}
-				columns={columns}
-				checkboxSelection
-				pageSizeOptions={[]}
-				hideFooterPagination
-				disableRowSelectionOnClick
-				onRowSelectionModelChange={onRowSelectionModelChange}
-				sx={{
-					[`& .${gridClasses.cell}:focus, & .${gridClasses.cell}:focus-within`]: {
-						outline: 'none',
-					},
-					[`& .${gridClasses.columnHeader}:focus, & .${gridClasses.columnHeader}:focus-within`]: {
-						outline: 'none',
-					},
-					[`& .${gridClasses.footerContainer}`]: {
-						display: 'none',
-					},
+		<>
+			<PortfolioHandleModal
+				open={openModal}
+				onClose={() => setOpenModal(false)}
+				coin={selectedCoin}
+				onSubmit={(amount, price) => {
+					if (onTransactionSubmit) {
+						onTransactionSubmit(selectedCoin, amount, price);
+					}
+
+					setOpenModal(false);
 				}}
 			/>
-		</DataGridContainer>
+			<DataGridContainer>
+				<DataGrid
+					columnVisibilityModel={{
+						addValue: isPortfolioView,
+						removeValue: isPortfolioView,
+						totalAmount: isPortfolioView,
+						currentValue: isPortfolioView,
+						lastSevenDays: !isPortfolioView,
+					}}
+					rows={rows}
+					columns={columns}
+					checkboxSelection
+					pageSizeOptions={[]}
+					hideFooterPagination
+					disableRowSelectionOnClick
+					autoHeight
+					onRowSelectionModelChange={onRowSelectionModelChange}
+					sx={{
+						[`& .${gridClasses.cell}:focus, & .${gridClasses.cell}:focus-within`]: {
+							outline: 'none',
+						},
+						[`& .${gridClasses.columnHeader}:focus, & .${gridClasses.columnHeader}:focus-within`]: {
+							outline: 'none',
+						},
+						[`& .${gridClasses.footerContainer}`]: {
+							display: 'none',
+						},
+					}}
+				/>
+			</DataGridContainer>
+		</>
 	);
 };
 
@@ -309,8 +317,8 @@ export default StyledDataGrid;
 
 const DataGridContainer = styled.div`
 	margin: 1rem 0 3rem 0;
-	height: 300px;
 	width: 100%;
+	flex: 1;
 `;
 
 const StyledSpan = styled.span<{ $isPriceChangePositive: boolean }>`

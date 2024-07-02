@@ -18,7 +18,10 @@ export function useCryptocurrenciesList() {
 		queryKey: ['cryptocurrenciesList'],
 		queryFn: async () => {
 			const response = await axios.get<Coins>(
-				`${BASE_URL}/coins/markets?vs_currency=usd&per_page=10&page=1?x_cg_demo_api_key=${apiKey}`
+				`${BASE_URL}/coins/markets?vs_currency=usd&per_page=10&page=1?x_cg_demo_api_key=${apiKey}`,
+				{
+					headers: { Accept: 'application/json' },
+				}
 			);
 
 			return response.data;

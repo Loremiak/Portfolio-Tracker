@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import StyledDataGrid, { mockedMarketData } from '../components/StyledDataGrid';
+import StyledDataGrid from '../components/StyledDataGrid';
 import BoxContainer from '../components/box/BoxContainer';
 import { useCryptocurrenciesList, useGlobalMarketData, useTrendingCoins } from '../services/api';
 import { Button, Typography } from '@mui/material';
@@ -19,7 +19,7 @@ const Home = () => {
 
 	const { data: globalMarketData, isLoading: isMarketDataLoading } = useGlobalMarketData();
 
-	console.log(mockedMarketData);
+	console.log('trendingData', trendingData, 'globalMarketData', globalMarketData, 'coinList', coinList);
 
 	return (
 		<div>

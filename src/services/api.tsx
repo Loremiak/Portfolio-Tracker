@@ -11,7 +11,7 @@ const BASE_URL = 'https://api.coingecko.com/api/v3';
 
 // https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&precision=2
 
-// console.log(apiKey);
+console.log('apiKey', apiKey);
 
 export function useCryptocurrenciesList() {
 	return useQuery({

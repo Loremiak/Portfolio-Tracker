@@ -46,16 +46,15 @@ const Home = () => {
 					Zaznacz dowolne waluty aby dodać je do portfolio
 				</Typography>
 			)}
-			{coinList ? (
-				<StyledDataGrid
-					data={coinList}
-					onRowSelectionModelChange={selected => {
-						setCoins(selected);
-						console.log(selected);
-					}}
-					isPortfolioView={false}
-				/>
-			) : null}
+
+			<StyledDataGrid
+				data={coinList ?? []}
+				onRowSelectionModelChange={selected => {
+					setCoins(selected);
+					console.log(selected);
+				}}
+				isPortfolioView={false}
+			/>
 		</div>
 	);
 };

@@ -82,7 +82,12 @@ const PortfolioHandleModal: React.FC<PortfolioHandleModal> = ({ open, onClose, o
 				<h2>Dodaj transakcję dla {coin}</h2>
 				<TextField label='Ilość' type='number' value={amount} onChange={handleAmountChange} fullWidth margin='normal' />
 				<TextField label='Cena' type='number' value={price} onChange={handlePriceChange} fullWidth margin='normal' />
-				<Button variant='contained' color='primary' onClick={handleSubmit} fullWidth>
+				<Button
+					variant='contained'
+					color='primary'
+					onClick={handleSubmit}
+					fullWidth
+					disabled={!amount || !price || amount < 0 || price < 0}>
 					Dodaj
 				</Button>
 			</StyledBox>

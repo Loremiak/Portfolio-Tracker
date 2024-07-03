@@ -78,6 +78,7 @@ import { Transaction } from '../services/types';
 const Portfolio = () => {
 	const dispatch = useAppDispatch();
 	const selectedCoinsSelector = useAppSelector(selectedCoins);
+	console.log('selectedCoinsSelector', selectedCoinsSelector);
 
 	const { data: portfolioCoins } = useCryptocurrenciesListByIds(selectedCoinsSelector);
 
@@ -85,12 +86,9 @@ const Portfolio = () => {
 	const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 	const [transactions, setTransactions] = useState<Transaction[]>([]);
 
-	console.log('coinsToDelete', coinsToDelete);
-
 	const onConfirmModal = () => {
 		if (coinsToDelete.length) {
 			const uniqueElements = compareArrays(selectedCoinsSelector, coinsToDelete as string[]);
-			console.log('uniqueElements', uniqueElements, coinsToDelete);
 			dispatch(setSelectedCoins(uniqueElements));
 		} else {
 			dispatch(setSelectedCoins([]));
@@ -111,7 +109,8 @@ const Portfolio = () => {
 								...transaction,
 								amount: transaction.amount + amount,
 								price: (transaction.amount * transaction.price + amount * price) / (transaction.amount + amount),
-						}
+								// eslint-disable-next-line no-mixed-spaces-and-tabs
+						  }
 						: transaction
 				);
 			} else {

@@ -47,14 +47,16 @@ const Home = () => {
 				</Typography>
 			)}
 
-			<StyledDataGrid
-				data={coinList ?? []}
-				onRowSelectionModelChange={selected => {
-					setCoins(selected);
-					console.log(selected);
-				}}
-				isPortfolioView={false}
-			/>
+			{coinList ? (
+				<StyledDataGrid
+					data={coinList}
+					onRowSelectionModelChange={selected => {
+						setCoins(selected);
+						console.log(selected);
+					}}
+					isPortfolioView={false}
+				/>
+			) : null}
 		</div>
 	);
 };

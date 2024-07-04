@@ -15,7 +15,7 @@ const CoinInfoContainer: React.FC<CoinInfoContainerProps> = ({
 	maxSupply,
 }) => {
 	return (
-		<div>
+		<DetailsContainer>
 			<Divider />
 			<DetailsCoinInfo>
 				<p>Kapitalizacja rynkowa</p>
@@ -37,9 +37,15 @@ const CoinInfoContainer: React.FC<CoinInfoContainerProps> = ({
 				<p>{maxSupply}</p>
 			</DetailsCoinInfo>
 			<Divider />
-		</div>
+		</DetailsContainer>
 	);
 };
+
+const DetailsContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+`;
 
 const DetailsCoinInfo = styled.div`
 	width: 100%;

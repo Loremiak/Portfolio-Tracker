@@ -1,27 +1,46 @@
 import { Button, TextField, Typography } from '@mui/material';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 type AuthProps = {
 	header: string;
 	redirectPath: string;
+	isLoginForm?: boolean;
 };
 
-const Auth: React.FC<AuthProps> = ({ header, redirectPath }) => {
+const Auth: React.FC<AuthProps> = ({ header, redirectPath, isLoginForm }) => {
 	const navigate = useNavigate();
+
+	const onFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+
+		navigate(redirectPath);
+	};
 
 	return (
 		<AuthContainer>
-			<StyledImage />
-			<AuthPanel>
+			<AuthPanel onSubmit={onFormSubmit}>
 				<Typography variant='h4' align='center'>
 					{header}
 				</Typography>
 				<TextField margin='normal' required id='email' label='Email' name='email' autoComplete='email' autoFocus />
 				<TextField margin='normal' required name='password' label='Hasło' type='password' id='password' />
-				<Button type='submit' variant='contained' onClick={() => navigate(redirectPath)}>
+				{!isLoginForm ? (
+					<TextField
+						margin='normal'
+						required
+						name='confirmPassword'
+						label='Powtórz hasło'
+						type='password'
+						id='confirmPassword'
+					/>
+				) : null}
+				<Button type='submit' variant='contained'>
 					{header}
 				</Button>
+				<Link to={isLoginForm ? '/register' : '/login'}>
+					{isLoginForm ? 'Nie masz konta? Kliknij aby się zarejestrować' : 'Masz już konto? Kliknij aby się zalogować'}
+				</Link>
 			</AuthPanel>
 		</AuthContainer>
 	);
@@ -31,24 +50,25 @@ export default Auth;
 
 const AuthContainer = styled.div`
 	display: flex;
-	flex-direction: row;
+	justify-content: center;
+	align-items: center;
 	height: 100vh;
 `;
 
-const StyledImage = styled.div`
-	flex: 1;
-	width: 50%;
-	background-image: url('src/assets/bitcoin.jpeg');
-	background-position: center;
-	height: 100%;
-`;
+// const StyledImage = styled.div`
+// 	flex: 1;
+// 	width: 50%;
+// 	background-image: url('src/assets/bitcoin.jpeg');
+// 	background-position: center;
+// 	height: 100%;
+// `;
 
-const AuthPanel = styled.div`
+const AuthPanel = styled.form`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	flex: 1;
 	flex-direction: column;
-	gap: 1rem;
-	height: 100%;
+	gap: 1.5rem;
+	border: 1px solid black;
+	padding: 2.5rem;
 `;

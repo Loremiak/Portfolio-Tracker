@@ -21,7 +21,7 @@ export function useCryptocurrenciesList() {
 					x_cg_demo_api_key: apiKey,
 					vs_currency: 'usd',
 					per_page: '10',
-					page: '1',
+					page: 1,
 				},
 				headers: { Accept: 'application/json' },
 			});

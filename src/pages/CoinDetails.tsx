@@ -1134,10 +1134,10 @@ const CoinDetails = () => {
 					{chartData ? <StyledChart prices={chartData.prices} /> : <StyledChart prices={mockedData.prices} />}
 				</ChartContainer>
 			</CoinDetailsContainer>
-			<div>
+			<CoinDescriptionContainer>
 				<h2>Informację o {coinDetailsInfo ? coinDetailsInfo.name : null}</h2>
 				<p>{coinDetailsInfo?.description.en}</p>
-			</div>
+			</CoinDescriptionContainer>
 		</>
 	);
 };
@@ -1154,6 +1154,12 @@ const InfoContainer = styled.div`
 
 const ChartContainer = styled.div`
 	width: 65%;
+`;
+
+const CoinDescriptionContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
 `;
 
 export default CoinDetails;

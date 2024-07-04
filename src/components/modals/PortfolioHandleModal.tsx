@@ -100,7 +100,6 @@ const StyledBox = styled(Box)`
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	width: 400px;
 	background-color: white;
 	padding: 2rem;
 	box-shadow: 24px;

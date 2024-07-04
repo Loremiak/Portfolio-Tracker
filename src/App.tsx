@@ -1,16 +1,15 @@
 import { Routes, Route, Outlet, useLocation } from 'react-router-dom';
-import './App.css';
 import Navbar from './components/navbar/Navbar';
 import Home from './pages/Home';
 import Footer from './components/Footer';
 import Portfolio from './pages/Portfolio';
 import CoinDetails from './pages/CoinDetails';
-import AuthView from './pages/AuthView';
 import styled from 'styled-components';
+import Auth from './components/Auth';
 
 function App() {
 	const location = useLocation();
-	const isAuthPage = location.pathname === '/login';
+	const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
 
 	return (
 		<AppContainer>
@@ -21,7 +20,8 @@ function App() {
 						<Route index element={<Home />} />
 						<Route path='/portfolio' element={<Portfolio />} />
 						<Route path='/coin-details/:id' element={<CoinDetails />} />
-						<Route path='/login' element={<AuthView />} />
+						<Route path='/login' element={<Auth header='Zaloguj się' redirectPath='/' isLoginForm />} />
+						<Route path='/register' element={<Auth header='Zarejestruj się' redirectPath='/' />} />
 						<Route path='*' element={<>Error</>} />
 					</Route>
 				</Routes>

@@ -53,9 +53,8 @@ const BasicInfoList = styled.ul`
 	justify-content: space-between;
 	list-style-type: none;
 	padding: 0.5rem;
-	margin: 0;
 	background-color: lightgray;
-	height: 18px;
+	height: 38px;
 `;
 
 const StyledSpan = styled.span<{ $isMarketCapChangePositive: boolean }>`

@@ -115,12 +115,18 @@ const StyledDataGrid: React.FC<{
 	onTransactionSubmit?: (coin: string, amount: number, price: number) => void;
 	onTransactionRemove?: (coin: string) => void;
 	transactions?: Transaction[];
-}> = ({ data, onRowSelectionModelChange, isPortfolioView, onTransactionSubmit, onTransactionRemove, transactions }) => {
+}> = ({
+	data,
+	onRowSelectionModelChange,
+	isPortfolioView,
+	onTransactionSubmit,
+	onTransactionRemove,
+	transactions,
+}) => {
 	const [openModal, setOpenModal] = useState(false);
 	const [selectedCoin, setSelectedCoin] = useState<string>('');
 
 	const handleAddButtonClick = (rowId: string) => {
-		console.log('rowID', rowId);
 		setSelectedCoin(rowId);
 		setOpenModal(true);
 	};

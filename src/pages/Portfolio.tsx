@@ -152,11 +152,11 @@ const Portfolio = () => {
 			<h1>Twoje portfolio</h1>
 			{portfolioCoins && selectedCoinsSelector.length > 0 ? (
 				<>
-					<div>
+					<PortfolioValueData>
 						<p>Suma wydatków: {calculateTotalSpent().toFixed(2)} USD</p>
 						<p>Obecne saldo: {calculateTotalValue().toFixed(2)} USD</p>
 						<p>Całkowity zysk/strata: {calculateTotalValue() - calculateTotalSpent()} USD</p>
-					</div>
+					</PortfolioValueData>
 					<ButtonsContainer>
 						<Button variant='outlined' disabled={!coinsToDelete.length} onClick={() => setIsConfirmModalOpen(true)}>
 							Usuń zaznaczone waluty
@@ -196,10 +196,20 @@ const PortfolioContainer = styled.div`
 	max-width: 100%;
 `;
 
+const PortfolioValueData = styled.div`
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	margin: 1rem 0;
+`;
+
 const StyledInfoContainer = styled.div`
 	background-color: lightblue;
-	padding: 0.5rem;
-	margin-top: 2rem;
+	padding: 1rem;
+	margin: 2rem 0;
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
 `;
 
 const ButtonsContainer = styled.div`

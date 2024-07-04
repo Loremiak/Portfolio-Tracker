@@ -10,6 +10,7 @@ import { useAppDispatch } from '../hooks/useAppDispatch';
 
 const Home = () => {
 	const [coins, setCoins] = useState<GridRowSelectionModel>([]);
+	// const [page, setPage] = useState(1);
 
 	const dispatch = useAppDispatch();
 
@@ -19,7 +20,7 @@ const Home = () => {
 
 	const { data: globalMarketData, isLoading: isMarketDataLoading } = useGlobalMarketData();
 
-	console.log('trendingData', trendingData, 'globalMarketData', globalMarketData, 'coinList', coinList);
+	// console.log('trendingData', trendingData, 'globalMarketData', globalMarketData, 'coinList', coinList);
 
 	return (
 		<div>
@@ -36,7 +37,6 @@ const Home = () => {
 				<Button
 					variant='outlined'
 					onClick={() => {
-						console.log('click');
 						dispatch(setSelectedCoins(coins));
 					}}>
 					Dodaj zaznaczone waluty do portfolio ({coins.length})
@@ -46,17 +46,14 @@ const Home = () => {
 					Zaznacz dowolne waluty aby dodać je do portfolio
 				</Typography>
 			)}
-
 			{coinList ? (
 				<StyledDataGrid
 					data={coinList}
-					onRowSelectionModelChange={selected => {
-						setCoins(selected);
-						console.log(selected);
-					}}
+					onRowSelectionModelChange={selected => setCoins(selected)}
 					isPortfolioView={false}
 				/>
 			) : null}
+			{/* <StyledPagination count={5} page={page} onChange={(_, page) => setPage(page)} color='primary' shape='rounded' /> */}
 		</div>
 	);
 };
@@ -66,3 +63,8 @@ export default Home;
 const StyledHeader = styled.h1`
 	margin: 2rem 0;
 `;
+
+// const StyledPagination = styled(Pagination)`
+// 	display: flex;
+// 	justify-content: center;
+// `;

@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import FacebookIcon from '../assets/facebook-icon.svg';
 import TwitterIcon from '../assets/twitter-icon.svg';
 import YouTubeIcon from '../assets/youtube-icon.svg';
+import { isLoggedUser } from '../firebase/firebase';
 
 const Footer = () => {
 	const iconArray = [FacebookIcon, TwitterIcon, YouTubeIcon];
@@ -25,13 +26,15 @@ const Footer = () => {
 					<p>Strony</p>
 					<SiteNavigationList>
 						<li>
-							<Link to='/'>home</Link>
+							<Link to='/'>Strona główna</Link>
 						</li>
+						{isLoggedUser ? (
+							<li>
+								<Link to='/portfolio'>Portfolio</Link>
+							</li>
+						) : null}
 						<li>
-							<Link to='/portfolio'>portfolio</Link>
-						</li>
-						<li>
-							<Link to='/login'>login</Link>
+							<Link to='/login'>Zaloguj się</Link>
 						</li>
 					</SiteNavigationList>
 				</ListContainer>
@@ -54,7 +57,7 @@ const Footer = () => {
 export default Footer;
 
 const FooterContainer = styled.div`
-	border: 2px solid gray;
+	border: 2px solid #6eacda;
 	padding: 1rem;
 	margin-top: 3rem;
 	width: 100%;
@@ -72,7 +75,8 @@ const LogoContainer = styled.div`
 `;
 
 const SiteDescription = styled.p`
-	padding: 1rem 0;
+	font-size: 1rem;
+	padding-top: 2rem;
 `;
 
 const SiteNavigationList = styled.ul`

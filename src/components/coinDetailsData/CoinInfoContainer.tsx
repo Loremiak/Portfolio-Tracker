@@ -16,27 +16,27 @@ const CoinInfoContainer: React.FC<CoinInfoContainerProps> = ({
 }) => {
 	return (
 		<DetailsContainer>
-			<Divider />
+			<Divider color='#6eacda' />
 			<DetailsCoinInfo>
 				<p>Kapitalizacja rynkowa</p>
 				<p>{marketCap}</p>
 			</DetailsCoinInfo>
-			<Divider />
+			<Divider color='#6eacda' />
 			<DetailsCoinInfo>
 				<p>24 godz. wolumen handlu</p>
 				<p>{totalVolume}</p>
 			</DetailsCoinInfo>
-			<Divider />
+			<Divider color='#6eacda' />
 			<DetailsCoinInfo>
 				<p>Zasoby w obiegu</p>
 				<p>{circulatingSupply}</p>
 			</DetailsCoinInfo>
-			<Divider />
+			<Divider color='#6eacda' />
 			<DetailsCoinInfo>
 				<p>Maksymalne zasoby</p>
 				<p>{maxSupply}</p>
 			</DetailsCoinInfo>
-			<Divider />
+			<Divider color='#6eacda' />
 		</DetailsContainer>
 	);
 };

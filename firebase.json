@@ -1,0 +1,13 @@
+{
+	"hosting": {
+		"site": "portfolio-tracker-32005",
+		"public": "public",
+		"ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+		"rewrites": [
+			{
+				"source": "**",
+				"destination": "/index.html"
+			}
+		]
+	}
+}

@@ -173,7 +173,7 @@ const BoxContainer: React.FC<{
 						<Box
 							value={marketData.total_market_cap.usd}
 							information='Kapitalizacja globalna'
-							marketCapPercent={`${roundToTwoDecimalPlaces(marketData.market_cap_change_percentage_24h_usd)} %`}
+							marketCapPercent={roundToTwoDecimalPlaces(marketData.market_cap_change_percentage_24h_usd)}
 						/>
 						<Box value={marketData.total_volume.usd} information='24 godzinny wolumen handlu' />
 					</>
@@ -209,7 +209,7 @@ const InfoContainer = styled.div`
 `;
 
 const CarouselContainer = styled.div`
-	border: 2px solid gray;
+	border: 2px solid #6eacda;
 	flex: 2;
 	max-width: 900px;
 	padding: 1rem;

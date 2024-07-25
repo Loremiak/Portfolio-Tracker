@@ -12,16 +12,16 @@ const BASE_URL = 'https://api.coingecko.com/api/v3';
 const apiKey = import.meta.env.VITE_APP_API_KEY;
 console.log('apiKey', apiKey);
 
-export function useCryptocurrenciesList() {
+export function useCryptocurrenciesList(page: number, pageSize: string) {
 	return useQuery({
-		queryKey: ['cryptocurrenciesList'],
+		queryKey: ['cryptocurrenciesList', page, pageSize],
 		queryFn: async () => {
 			const { data } = await axios.get<Coins>(`${BASE_URL}/coins/markets`, {
 				params: {
 					x_cg_demo_api_key: apiKey,
 					vs_currency: 'usd',
-					per_page: '25',
-					page: '1',
+					per_page: pageSize,
+					page: String(page),
 				},
 				headers: { Accept: 'application/json' },
 			});
@@ -33,7 +33,7 @@ export function useCryptocurrenciesList() {
 
 export function useCryptocurrenciesListByIds(ids: string[]) {
 	return useQuery({
-		queryKey: ['cryptocurrenciesList', ids, { ids }],
+		queryKey: ['cryptocurrenciesList', ids],
 		queryFn: async () => {
 			console.log('ids', ids);
 			const { data } = await axios.get<Coins>(`${BASE_URL}/coins/markets`, {

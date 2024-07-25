@@ -14,6 +14,7 @@ import { Coins, Transaction } from '../services/types';
 import { Button } from '@mui/material';
 import { useState } from 'react';
 import PortfolioHandleModal from './modals/PortfolioHandleModal';
+import { isLoggedUser } from '../firebase/firebase';
 
 // export const mockedMarketData = [
 // 	{
@@ -115,14 +116,7 @@ const StyledDataGrid: React.FC<{
 	onTransactionSubmit?: (coin: string, amount: number, price: number) => void;
 	onTransactionRemove?: (coin: string) => void;
 	transactions?: Transaction[];
-}> = ({
-	data,
-	onRowSelectionModelChange,
-	isPortfolioView,
-	onTransactionSubmit,
-	onTransactionRemove,
-	transactions,
-}) => {
+}> = ({ data, onRowSelectionModelChange, isPortfolioView, onTransactionSubmit, onTransactionRemove, transactions }) => {
 	const [openModal, setOpenModal] = useState(false);
 	const [selectedCoin, setSelectedCoin] = useState<string>('');
 
@@ -154,7 +148,6 @@ const StyledDataGrid: React.FC<{
 				dayChangeValue: roundToTwoDecimalPlaces(price_change_percentage_24h),
 				totalVolume: `${handleBiggerValues(total_volume)} USD`,
 				marketCap: `${handleBiggerValues(market_cap)} USD`,
-				lastSevenDays: name,
 				totalAmount: transaction ? transaction.amount : 0,
 				currentValue: transaction ? `${handleBiggerValues(transaction.amount * current_price)} USD` : '0 USD',
 			};
@@ -166,7 +159,8 @@ const StyledDataGrid: React.FC<{
 		{
 			field: 'image',
 			headerName: '',
-			width: 25,
+			flex: 1,
+			maxWidth: 60,
 			resizable: false,
 			hideSortIcons: true,
 			disableColumnMenu: true,
@@ -177,7 +171,7 @@ const StyledDataGrid: React.FC<{
 		{
 			field: 'nameWithSymbol',
 			headerName: 'Waluta',
-			width: 130,
+			flex: 1,
 			resizable: false,
 			disableColumnMenu: true,
 			renderCell: params => <StyledLink to={`/coin-details/${params.id}`}>{params.value}</StyledLink>,
@@ -185,14 +179,14 @@ const StyledDataGrid: React.FC<{
 		{
 			field: 'currentPrice',
 			headerName: 'Kurs',
-			width: 120,
+			flex: 1,
 			resizable: false,
 			disableColumnMenu: true,
 		},
 		{
 			field: 'dayChangeValue',
 			headerName: '24h',
-			width: 80,
+			flex: 1,
 			resizable: false,
 			disableColumnMenu: true,
 			renderCell: params => (
@@ -201,55 +195,48 @@ const StyledDataGrid: React.FC<{
 				</StyledSpan>
 			),
 		},
-		{ field: 'totalVolume', headerName: 'Wolumen 24h', width: 200, resizable: false, disableColumnMenu: true },
-		{ field: 'marketCap', headerName: 'Kapitalizacja rynkowa', width: 210, resizable: false, disableColumnMenu: true },
-		{
-			field: 'lastSevenDays',
-			headerName: 'Ostatnie 7 dni',
-			width: 170,
-			resizable: false,
-			disableColumnMenu: true,
-			sortable: false,
-		},
+		{ field: 'totalVolume', headerName: 'Wolumen 24h', flex: 1, resizable: false, disableColumnMenu: true },
+		{ field: 'marketCap', headerName: 'Kapitalizacja rynkowa', flex: 1, resizable: false, disableColumnMenu: true },
 		{
 			field: 'totalAmount',
 			headerName: 'Ilość',
-			width: 70,
+			flex: 1,
 			resizable: false,
 			disableColumnMenu: true,
 		},
 		{
 			field: 'currentValue',
 			headerName: 'Wartość',
-			width: 125,
+			flex: 1,
 			resizable: false,
 			disableColumnMenu: true,
 		},
 		{
 			field: 'addValue',
 			headerName: 'Dodaj',
-			width: 60,
+			flex: 1,
 			resizable: false,
 			disableColumnMenu: true,
 			sortable: false,
 			renderCell: params => {
 				console.log('params', params);
 				return (
-					<>
-						<Button
-							onClick={() => {
-								handleAddButtonClick(params.row.id);
-							}}>
-							+
-						</Button>
-					</>
+					<Button
+						sx={{
+							minWidth: '40px',
+						}}
+						onClick={() => {
+							handleAddButtonClick(params.row.id);
+						}}>
+						+
+					</Button>
 				);
 			},
 		},
 		{
 			field: 'removeValue',
 			headerName: 'Usuń',
-			width: 60,
+			flex: 1,
 			resizable: false,
 			disableColumnMenu: true,
 			sortable: false,
@@ -257,17 +244,18 @@ const StyledDataGrid: React.FC<{
 				const transaction = (transactions ? transactions : []).find(t => t.coin === params.row.id);
 
 				return (
-					<>
-						<Button
-							onClick={() => {
-								if (onTransactionRemove) {
-									onTransactionRemove(params.row.id);
-								}
-							}}
-							disabled={!transaction || transaction.amount <= 0}>
-							-
-						</Button>
-					</>
+					<Button
+						sx={{
+							minWidth: '40px',
+						}}
+						onClick={() => {
+							if (onTransactionRemove) {
+								onTransactionRemove(params.row.id);
+							}
+						}}
+						disabled={!transaction || transaction.amount <= 0}>
+						-
+					</Button>
 				);
 			},
 		},
@@ -298,7 +286,7 @@ const StyledDataGrid: React.FC<{
 					}}
 					rows={rows}
 					columns={columns}
-					checkboxSelection
+					checkboxSelection={!!isLoggedUser}
 					pageSizeOptions={[]}
 					hideFooterPagination
 					disableRowSelectionOnClick

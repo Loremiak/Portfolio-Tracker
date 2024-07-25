@@ -14,7 +14,7 @@ const Box = ({ value, information, marketCapPercent }: BoxProps) => {
 			<p>
 				<span>{information} </span>
 				{marketCapPercent ? (
-					<StyledSpan $isMarketCapChangePositive={Number(marketCapPercent) > 1}>{marketCapPercent}</StyledSpan>
+					<StyledSpan $isMarketCapChangePositive={Number(marketCapPercent) > 0}>{marketCapPercent}%</StyledSpan>
 				) : null}
 			</p>
 		</BoxContainer>
@@ -25,7 +25,7 @@ const BoxContainer = styled.div`
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
-	border: 2px solid gray;
+	border: 2px solid #6eacda;
 	padding: 1rem;
 	height: 100%;
 `;

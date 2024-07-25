@@ -53,7 +53,7 @@ const BasicInfoList = styled.ul`
 	justify-content: space-between;
 	list-style-type: none;
 	padding: 0.5rem;
-	background-color: lightgray;
+	background-color: #6eacda;
 	height: 38px;
 `;
 

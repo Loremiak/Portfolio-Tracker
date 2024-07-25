@@ -2,21 +2,23 @@ import styled from 'styled-components';
 import StyledDataGrid from '../components/StyledDataGrid';
 import BoxContainer from '../components/box/BoxContainer';
 import { useCryptocurrenciesList, useGlobalMarketData, useTrendingCoins } from '../services/api';
-import { Button, Typography } from '@mui/material';
+import { Button, Divider, Pagination, Typography } from '@mui/material';
 import { GridRowSelectionModel } from '@mui/x-data-grid';
 import { useState } from 'react';
 import { setSelectedCoins } from '../store/coinsSlice';
 import { useAppDispatch } from '../hooks/useAppDispatch';
+import SelectOptions from '../components/SelectOptions';
 
 const Home = () => {
 	const [coins, setCoins] = useState<GridRowSelectionModel>([]);
-	// const [page, setPage] = useState(1);
+	const [page, setPage] = useState(1);
+	const [pageSize, setPageSize] = useState('5');
 
 	const dispatch = useAppDispatch();
 
 	const { data: trendingData, isLoading: isCarouselDataLoading } = useTrendingCoins();
 
-	const { data: coinList } = useCryptocurrenciesList();
+	const { data: coinList } = useCryptocurrenciesList(page, pageSize);
 
 	const { data: globalMarketData, isLoading: isMarketDataLoading } = useGlobalMarketData();
 
@@ -24,7 +26,10 @@ const Home = () => {
 
 	return (
 		<div>
-			<StyledHeader>Ceny kryptowalut według kapitalizacji rynkowej</StyledHeader>
+			<StyledHeaderContainer>
+				<StyledHeader>Ceny kryptowalut według kapitalizacji rynkowej</StyledHeader>
+				<Divider sx={{ borderBottomWidth: 2 }} color='#6eacda' />
+			</StyledHeaderContainer>
 			{trendingData && globalMarketData ? (
 				<BoxContainer
 					coins={trendingData}
@@ -47,24 +52,47 @@ const Home = () => {
 				</Typography>
 			)}
 			{coinList ? (
-				<StyledDataGrid
-					data={coinList}
-					onRowSelectionModelChange={selected => setCoins(selected)}
-					isPortfolioView={false}
-				/>
+				<>
+					<StyledDataGrid
+						data={coinList}
+						onRowSelectionModelChange={selected => setCoins(selected)}
+						isPortfolioView={false}
+					/>
+					<PaginationContainer>
+						<StyledPagination
+							count={5}
+							page={page}
+							onChange={(_, page) => setPage(page)}
+							color='primary'
+							shape='rounded'
+						/>
+						<SelectOptions pageSize={pageSize} handleChange={event => setPageSize(event.target.value as string)} />
+					</PaginationContainer>
+				</>
 			) : null}
-			{/* <StyledPagination count={5} page={page} onChange={(_, page) => setPage(page)} color='primary' shape='rounded' /> */}
 		</div>
 	);
 };
 
 export default Home;
 
-const StyledHeader = styled.h1`
-	margin: 2rem 0;
+const StyledHeaderContainer = styled.div`
+	margin: 4rem 0;
+	font-size: 2rem;
 `;
 
-// const StyledPagination = styled(Pagination)`
-// 	display: flex;
-// 	justify-content: center;
-// `;
+const StyledHeader = styled.h1`
+	font-size: 2rem;
+	margin-bottom: 0.75rem;
+`;
+
+const StyledPagination = styled(Pagination)`
+	display: flex;
+	justify-content: center;
+`;
+
+const PaginationContainer = styled.div`
+	display: flex;
+	justify-content: center;
+	gap: 2rem;
+`;

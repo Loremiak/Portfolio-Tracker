@@ -12,24 +12,32 @@ function App() {
 	const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
 
 	return (
-		<AppContainer>
-			{!isAuthPage ? <Navbar /> : null}
-			<Content>
-				<Routes>
-					<Route path='/' element={<Outlet />}>
-						<Route index element={<Home />} />
-						<Route path='/portfolio' element={<Portfolio />} />
-						<Route path='/coin-details/:id' element={<CoinDetails />} />
-						<Route path='/login' element={<Auth header='Zaloguj się' redirectPath='/' isLoginForm />} />
-						<Route path='/register' element={<Auth header='Zarejestruj się' redirectPath='/' />} />
-						<Route path='*' element={<>Error</>} />
-					</Route>
-				</Routes>
-			</Content>
-			{!isAuthPage ? <Footer /> : null}
-		</AppContainer>
+		<FullViewContainer>
+			<AppContainer>
+				{!isAuthPage ? <Navbar /> : null}
+				<Content>
+					<Routes>
+						<Route path='/' element={<Outlet />}>
+							<Route index element={<Home />} />
+							<Route path='/portfolio' element={<Portfolio />} />
+							<Route path='/coin-details/:id' element={<CoinDetails />} />
+							<Route path='/login' element={<Auth redirectPath='/' isLoginForm />} />
+							<Route path='/register' element={<Auth redirectPath='/login' />} />
+							<Route path='*' element={<>Error</>} />
+						</Route>
+					</Routes>
+				</Content>
+				{!isAuthPage ? <Footer /> : null}
+			</AppContainer>
+		</FullViewContainer>
 	);
 }
+
+const FullViewContainer = styled.div`
+	width: 100%;
+	height: 100%;
+	background-color: #eeeeee;
+`;
 
 const AppContainer = styled.div`
 	display: flex;

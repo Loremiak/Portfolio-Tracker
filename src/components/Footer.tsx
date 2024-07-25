@@ -1,13 +1,15 @@
 import styled from 'styled-components';
 import Logo from './Logo';
-import { Divider } from '@mui/material';
+import { Divider, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import FacebookIcon from '../assets/facebook-icon.svg';
 import TwitterIcon from '../assets/twitter-icon.svg';
 import YouTubeIcon from '../assets/youtube-icon.svg';
-import { isLoggedUser } from '../firebase/firebase';
+import useAuth from '../hooks/useAuth';
 
 const Footer = () => {
+	const { isAuthenticated } = useAuth();
+
 	const iconArray = [FacebookIcon, TwitterIcon, YouTubeIcon];
 
 	return (
@@ -15,7 +17,7 @@ const Footer = () => {
 			<InfoContainer>
 				<LogoContainer>
 					<Logo />
-					<Divider />
+					<Divider color='#6eacda' />
 					<SiteDescription>
 						Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro aliquid adipisci labore ipsum a recusandae
 						perspiciatis nisi. Ipsa iste eligendi, nesciunt non tempora, ex, voluptatum voluptates nobis suscipit
@@ -26,15 +28,22 @@ const Footer = () => {
 					<p>Strony</p>
 					<SiteNavigationList>
 						<li>
-							<Link to='/'>Strona główna</Link>
+							<Link to='/'>
+								<Typography color='#03346E' fontSize='1rem'>
+									Strona główna
+								</Typography>
+							</Link>
 						</li>
-						{isLoggedUser ? (
-							<li>
-								<Link to='/portfolio'>Portfolio</Link>
-							</li>
-						) : null}
 						<li>
-							<Link to='/login'>Zaloguj się</Link>
+							{isAuthenticated ? (
+								<Link to='/portfolio'>
+									<Typography color='#03346E' fontSize='1rem'>
+										Portfolio
+									</Typography>
+								</Link>
+							) : (
+								<Link to='/login'>Zaloguj się</Link>
+							)}
 						</li>
 					</SiteNavigationList>
 				</ListContainer>

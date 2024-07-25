@@ -6,10 +6,15 @@ import Portfolio from './pages/Portfolio';
 import CoinDetails from './pages/CoinDetails';
 import styled from 'styled-components';
 import Auth from './components/Auth';
+import { ResetPassword } from './pages/ResetPassword';
+import useAuth from './hooks/useAuth';
 
 function App() {
 	const location = useLocation();
-	const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
+	const { isAuthenticated } = useAuth();
+
+	const isAuthPage =
+		location.pathname === '/login' || location.pathname === '/register' || location.pathname === '/reset-password';
 
 	return (
 		<FullViewContainer>
@@ -19,10 +24,11 @@ function App() {
 					<Routes>
 						<Route path='/' element={<Outlet />}>
 							<Route index element={<Home />} />
-							<Route path='/portfolio' element={<Portfolio />} />
+							{isAuthenticated ? <Route path='/portfolio' element={<Portfolio />} /> : null}
 							<Route path='/coin-details/:id' element={<CoinDetails />} />
 							<Route path='/login' element={<Auth redirectPath='/' isLoginForm />} />
 							<Route path='/register' element={<Auth redirectPath='/login' />} />
+							<Route path='/reset-password' element={<ResetPassword />} />
 							<Route path='*' element={<>Error</>} />
 						</Route>
 					</Routes>

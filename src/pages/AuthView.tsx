@@ -1,7 +1,7 @@
 import Auth from '../components/Auth';
 
 const AuthView = () => {
-	return <Auth header='Zaloguj się' redirectPath='/'></Auth>;
+	return <Auth redirectPath='/'></Auth>;
 };
 
 export default AuthView;

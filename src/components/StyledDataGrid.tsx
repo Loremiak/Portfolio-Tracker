@@ -14,7 +14,7 @@ import { Coins, Transaction } from '../services/types';
 import { Button } from '@mui/material';
 import { useState } from 'react';
 import PortfolioHandleModal from './modals/PortfolioHandleModal';
-import { isLoggedUser } from '../firebase/firebase';
+import useAuth from '../hooks/useAuth';
 
 // export const mockedMarketData = [
 // 	{
@@ -119,6 +119,8 @@ const StyledDataGrid: React.FC<{
 }> = ({ data, onRowSelectionModelChange, isPortfolioView, onTransactionSubmit, onTransactionRemove, transactions }) => {
 	const [openModal, setOpenModal] = useState(false);
 	const [selectedCoin, setSelectedCoin] = useState<string>('');
+
+	const { isAuthenticated } = useAuth();
 
 	const handleAddButtonClick = (rowId: string) => {
 		setSelectedCoin(rowId);
@@ -286,7 +288,7 @@ const StyledDataGrid: React.FC<{
 					}}
 					rows={rows}
 					columns={columns}
-					checkboxSelection={!!isLoggedUser}
+					checkboxSelection={isAuthenticated}
 					pageSizeOptions={[]}
 					hideFooterPagination
 					disableRowSelectionOnClick

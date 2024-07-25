@@ -55,7 +55,7 @@ const CoinContainer = styled.div`
 	flex-direction: column;
 	padding: 1.25rem 0.5rem;
 	margin: 1rem;
-	background-color: lightgrey;
+	background-color: white;
 `;
 
 const StyledImg = styled.img`

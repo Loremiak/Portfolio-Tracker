@@ -3,15 +3,17 @@ import styled from 'styled-components';
 import Logo from '../Logo';
 import { useGlobalMarketData } from '../../services/api';
 import MarketDataList from './MarketDataList';
-import { auth, isLoggedUser } from '../../firebase/firebase';
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
+import useAuth from '../../hooks/useAuth';
 
 const Navbar = () => {
 	const { data: globalMarketData, isLoading: isMarketDataLoading } = useGlobalMarketData();
 
 	console.log(globalMarketData);
 
-	console.log(isLoggedUser);
+	const { isAuthenticated, logout } = useAuth();
+
+	console.log('isAuthenticated', isAuthenticated);
 
 	return (
 		<>
@@ -20,17 +22,29 @@ const Navbar = () => {
 				<div>
 					<MenuItemList>
 						<li>
-							<Link to='/'>Strona główna</Link>
+							<Link to='/'>
+								<Typography color='#021526' fontWeight='bolder'>
+									Strona główna
+								</Typography>
+							</Link>
 						</li>
-						{isLoggedUser ? (
+						{isAuthenticated ? (
 							<li>
-								<Link to='/portfolio'>Portfolio</Link>
+								<Link to='/portfolio'>
+									<Typography color='#021526' fontWeight='bolder'>
+										Portfolio
+									</Typography>
+								</Link>
 							</li>
 						) : null}
 						<li>
-							{isLoggedUser ? (
-								<Button onClick={() => auth.signOut()}>
-									<Link to='/'>Wyloguj się</Link>
+							{isAuthenticated ? (
+								<Button onClick={logout} variant='contained' color='error'>
+									<Link to='/'>
+										<Typography color='#E2E2B6' fontWeight='bolder' fontSize='0.75rem'>
+											Wyloguj się
+										</Typography>
+									</Link>
 								</Button>
 							) : (
 								<Link to='/login'>Zaloguj się</Link>
@@ -57,6 +71,7 @@ const NavbarContainer = styled.nav`
 
 const MenuItemList = styled.ul`
 	display: flex;
+	align-items: center;
 	gap: 4rem;
 	list-style-type: none;
 `;

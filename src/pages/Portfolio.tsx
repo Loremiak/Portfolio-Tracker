@@ -3,7 +3,7 @@ import StyledDataGrid from '../components/StyledDataGrid';
 import { useCryptocurrenciesListByIds } from '../services/api';
 import { useAppSelector } from '../hooks/useAppSelector';
 import { selectedCoins, setSelectedCoins } from '../store/coinsSlice';
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { useAppDispatch } from '../hooks/useAppDispatch';
 import { useState } from 'react';
 import { GridRowSelectionModel } from '@mui/x-data-grid';
@@ -78,7 +78,6 @@ import { Transaction } from '../services/types';
 const Portfolio = () => {
 	const dispatch = useAppDispatch();
 	const selectedCoinsSelector = useAppSelector(selectedCoins);
-	console.log('selectedCoinsSelector', selectedCoinsSelector);
 
 	const { data: portfolioCoins } = useCryptocurrenciesListByIds(selectedCoinsSelector);
 
@@ -142,12 +141,12 @@ const Portfolio = () => {
 	return (
 		<PortfolioContainer>
 			<StyledInfoContainer>
-				<p>Twój portfel aktywów</p>
-				<p>
+				<Typography>Twój portfel aktywów</Typography>
+				<Typography>
 					{selectedCoinsSelector.length
 						? 'Możesz tutaj przeglądać twoje obecne portfolio oraz sprawdzać ile zarobiłeś. Jeżeli chcesz dodać więcej walut do portfolio to udaj się na stronę główną, zaznacz je a następnie kliknij przycik z dodaniem ich do portfolio.'
 						: 'Aby móc śledzić wybrane waluty, udaj się na stronę główną, zaznacz je a następnie kliknij przycisk z dodaniem ich do portfolio.'}
-				</p>
+				</Typography>
 			</StyledInfoContainer>
 			<h1>Twoje portfolio</h1>
 			{portfolioCoins && selectedCoinsSelector.length > 0 ? (
@@ -185,7 +184,11 @@ const Portfolio = () => {
 					/>
 				</>
 			) : (
-				<Link to='/'>Udaj się na stronę główną aby dodać wybrane waluty do portfolio</Link>
+				<Link to='/'>
+					<Typography marginTop='1.5rem' color='#6EACDA' fontWeight='bolder'>
+						Udaj się na stronę główną aby dodać wybrane waluty do portfolio
+					</Typography>
+				</Link>
 			)}
 		</PortfolioContainer>
 	);

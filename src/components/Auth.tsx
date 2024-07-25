@@ -2,8 +2,9 @@ import { Button, TextField, Typography } from '@mui/material';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { auth, isLoggedUser } from '../firebase/firebase';
+import { auth } from '../firebase/firebase';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import useAuth from '../hooks/useAuth';
 
 type AuthProps = {
 	redirectPath: string;
@@ -15,20 +16,27 @@ const Auth: React.FC<AuthProps> = ({ redirectPath, isLoginForm }) => {
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
 
+	const { isAuthenticated } = useAuth();
+
+	console.log('isAuthenticated', isAuthenticated);
+
 	const navigate = useNavigate();
 
-	console.log(email, password, confirmPassword, isLoggedUser);
+	console.log(email, password, confirmPassword, isAuthenticated);
 
 	const onFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
-		console.log(event);
-
-		if (isLoginForm && !isLoggedUser) {
-			await signInWithEmailAndPassword(auth, email, password);
+		if (isLoginForm && !isAuthenticated) {
+			try {
+				await signInWithEmailAndPassword(auth, email, password);
+				navigate(redirectPath);
+			} catch (error) {
+				console.error(error);
+			}
 		}
 
-		if (!isLoginForm && !isLoggedUser) {
+		if (!isLoginForm && !isAuthenticated) {
 			try {
 				await createUserWithEmailAndPassword(auth, email, password);
 				navigate(redirectPath);
@@ -52,6 +60,7 @@ const Auth: React.FC<AuthProps> = ({ redirectPath, isLoginForm }) => {
 					name='email'
 					autoComplete='email'
 					autoFocus
+					defaultValue={'test@gmail.com'}
 					onChange={e => {
 						setEmail(e.target.value);
 					}}
@@ -63,6 +72,7 @@ const Auth: React.FC<AuthProps> = ({ redirectPath, isLoginForm }) => {
 					label='Hasło'
 					type='password'
 					id='password'
+					defaultValue={'Qwerty123'}
 					onChange={e => {
 						setPassword(e.target.value);
 					}}
@@ -84,8 +94,22 @@ const Auth: React.FC<AuthProps> = ({ redirectPath, isLoginForm }) => {
 					{isLoginForm ? 'Zaloguj się' : 'Zarejestruj się'}
 				</Button>
 				<Link to={isLoginForm ? '/register' : '/login'}>
-					{isLoginForm ? 'Nie masz konta? Kliknij aby się zarejestrować' : 'Masz już konto? Kliknij aby się zalogować'}
+					<Typography fontSize='0.75rem' color='#6eacda'>
+						{isLoginForm
+							? 'Nie masz konta? Kliknij aby się zarejestrować'
+							: 'Masz już konto? Kliknij aby się zalogować'}
+					</Typography>
 				</Link>
+				{isLoginForm ? (
+					<Link to='/reset-password'>
+						<Typography fontSize='0.75rem' color='#6eacda'>
+							Zapomniałeś hasła?
+						</Typography>
+					</Link>
+				) : null}
+				<Typography sx={{ position: 'absolute', bottom: '0' }} fontSize='0.5rem' fontWeight='bold'>
+					Copyright by Portfolio Tracker
+				</Typography>
 			</AuthPanel>
 		</AuthContainer>
 	);
@@ -100,15 +124,8 @@ const AuthContainer = styled.div`
 	height: 100vh;
 `;
 
-// const StyledImage = styled.div`
-// 	flex: 1;
-// 	width: 50%;
-// 	background-image: url('src/assets/bitcoin.jpeg');
-// 	background-position: center;
-// 	height: 100%;
-// `;
-
 const AuthPanel = styled.form`
+	position: relative;
 	display: flex;
 	justify-content: center;
 	align-items: center;

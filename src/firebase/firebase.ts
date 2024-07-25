@@ -19,6 +19,5 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const isLoggedUser = auth.currentUser?.uid;
 
-export { app, auth, isLoggedUser };
+export { app, auth };

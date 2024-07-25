@@ -28,6 +28,7 @@ const BoxContainer = styled.div`
 	border: 2px solid #6eacda;
 	padding: 1rem;
 	height: 100%;
+	background-color: white;
 `;
 
 const StyledSpan = styled.span<{ $isMarketCapChangePositive: boolean }>`

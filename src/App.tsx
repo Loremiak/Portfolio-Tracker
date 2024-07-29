@@ -5,7 +5,7 @@ import Footer from './components/Footer';
 import Portfolio from './pages/Portfolio';
 import CoinDetails from './pages/CoinDetails';
 import styled from 'styled-components';
-import Auth from './components/Auth';
+import Auth from './pages/Auth';
 import { ResetPassword } from './pages/ResetPassword';
 import useAuth from './hooks/useAuth';
 

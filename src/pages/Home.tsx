@@ -8,8 +8,12 @@ import { useState } from 'react';
 import { setSelectedCoins } from '../store/coinsSlice';
 import { useAppDispatch } from '../hooks/useAppDispatch';
 import SelectOptions from '../components/SelectOptions';
+import useAuth from '../hooks/useAuth';
+import { toast } from 'react-toastify';
 
 const Home = () => {
+	const { isAuthenticated } = useAuth();
+
 	const [coins, setCoins] = useState<GridRowSelectionModel>([]);
 	const [page, setPage] = useState(1);
 	const [pageSize, setPageSize] = useState('5');
@@ -21,8 +25,6 @@ const Home = () => {
 	const { data: coinList } = useCryptocurrenciesList(page, pageSize);
 
 	const { data: globalMarketData, isLoading: isMarketDataLoading } = useGlobalMarketData();
-
-	// console.log('trendingData', trendingData, 'globalMarketData', globalMarketData, 'coinList', coinList);
 
 	return (
 		<div>
@@ -42,13 +44,21 @@ const Home = () => {
 				<Button
 					variant='outlined'
 					onClick={() => {
-						dispatch(setSelectedCoins(coins));
+						try {
+							dispatch(setSelectedCoins(coins));
+							toast.success('Waluty dodane pomyślnie!');
+						} catch (error) {
+							toast.error('Wystąpił problem z dodaniem wybranych walut');
+							console.error(error);
+						}
 					}}>
 					Dodaj zaznaczone waluty do portfolio ({coins.length})
 				</Button>
 			) : (
 				<Typography variant='h6' color='gray'>
-					Zaznacz dowolne waluty aby dodać je do portfolio
+					{isAuthenticated
+						? 'Zaznacz dowolne waluty aby dodać je do portfolio'
+						: 'Zaloguj się aby móc dodać wybrane waluty do swojego portfolio'}
 				</Typography>
 			)}
 			{coinList ? (

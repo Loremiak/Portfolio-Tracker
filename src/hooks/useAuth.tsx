@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { auth } from '../firebase/firebase';
+import { toast } from 'react-toastify';
 
 const useAuth = () => {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -18,9 +19,13 @@ const useAuth = () => {
 	}, []);
 
 	const logout = () => {
-		signOut(auth).catch(error => {
+		try {
+			signOut(auth);
+			toast.success('Pomyślnie wylogowano!');
+		} catch (error) {
 			console.error('Sign out error', error);
-		});
+			toast.error('Wystąpił problem z wylogowaniem');
+		}
 	};
 
 	return { isAuthenticated, logout };

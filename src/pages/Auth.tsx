@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { auth } from '../firebase/firebase';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import useAuth from '../hooks/useAuth';
+import { toast } from 'react-toastify';
 
 type AuthProps = {
 	redirectPath: string;
@@ -30,18 +31,22 @@ const Auth: React.FC<AuthProps> = ({ redirectPath, isLoginForm }) => {
 		if (isLoginForm && !isAuthenticated) {
 			try {
 				await signInWithEmailAndPassword(auth, email, password);
+				toast.success('Pomyślnie zalogowano!');
 				navigate(redirectPath);
 			} catch (error) {
 				console.error(error);
+				toast.error('Wystąpił problem z logowaniem');
 			}
 		}
 
 		if (!isLoginForm && !isAuthenticated) {
 			try {
 				await createUserWithEmailAndPassword(auth, email, password);
+				toast.success('Pomyślnie zarejestrowano!');
 				navigate(redirectPath);
 			} catch (error) {
 				console.error(error);
+				toast.error('Wystąpił problem z rejestracją');
 			}
 		}
 	};

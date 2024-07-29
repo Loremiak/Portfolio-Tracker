@@ -4,6 +4,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { auth } from '../firebase/firebase';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 export const ResetPassword = () => {
 	const [email, setEmail] = useState('');
@@ -11,7 +12,13 @@ export const ResetPassword = () => {
 	const onFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 
-		await sendPasswordResetEmail(auth, email);
+		try {
+			await sendPasswordResetEmail(auth, email);
+			toast.success('Email został wysłany!');
+		} catch (error) {
+			console.error(error);
+			toast.error('Wystąpił problem z wysłaniem emaila');
+		}
 	};
 
 	return (
@@ -35,7 +42,9 @@ export const ResetPassword = () => {
 				/>
 				<ButtonContainer>
 					<Link to='/login'>
-						<Typography>Powrót</Typography>
+						<Typography color='#03346E' fontSize='1rem'>
+							Powrót
+						</Typography>
 					</Link>
 					<Button type='submit' variant='contained'>
 						Zresetuj hasło

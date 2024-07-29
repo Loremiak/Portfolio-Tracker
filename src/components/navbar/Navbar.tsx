@@ -47,7 +47,11 @@ const Navbar = () => {
 									</Link>
 								</Button>
 							) : (
-								<Link to='/login'>Zaloguj się</Link>
+								<Link to='/login'>
+									<Typography color='#021526' fontWeight='bolder'>
+										Zaloguj się
+									</Typography>
+								</Link>
 							)}
 						</li>
 					</MenuItemList>

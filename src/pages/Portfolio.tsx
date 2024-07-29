@@ -11,6 +11,7 @@ import { compareArrays } from '../helpers/compareArrays';
 import ConfirmModal from '../components/modals/ConfirmModal';
 import { Link } from 'react-router-dom';
 import { Transaction } from '../services/types';
+import { toast } from 'react-toastify';
 
 // const mockedBTCETH = [
 // 	{
@@ -92,6 +93,7 @@ const Portfolio = () => {
 		} else {
 			dispatch(setSelectedCoins([]));
 		}
+		toast.success('Pomyślnie usunięto wybrane waluty!');
 
 		setIsConfirmModalOpen(false);
 		setCoinsToDelete([]);

@@ -215,13 +215,13 @@ const StyledDataGrid: React.FC<{
 		},
 		{
 			field: 'addValue',
-			headerName: 'Dodaj',
+			headerName: transactions?.length ? 'Edytuj' : 'Dodaj',
 			flex: 1,
 			resizable: false,
 			disableColumnMenu: true,
 			sortable: false,
 			renderCell: params => {
-				console.log('params', params);
+				console.log(transactions);
 				return (
 					<Button
 						sx={{
@@ -262,6 +262,8 @@ const StyledDataGrid: React.FC<{
 			},
 		},
 	];
+
+	console.log('transactions', transactions);
 
 	return (
 		<>
@@ -304,6 +306,7 @@ const StyledDataGrid: React.FC<{
 						[`& .${gridClasses.footerContainer}`]: {
 							display: 'none',
 						},
+						backgroundColor: 'white',
 					}}
 				/>
 			</DataGridContainer>

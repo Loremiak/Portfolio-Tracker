@@ -42,7 +42,11 @@ const Footer = () => {
 									</Typography>
 								</Link>
 							) : (
-								<Link to='/login'>Zaloguj się</Link>
+								<Link to='/login'>
+									<Typography color='#03346E' fontSize='1rem'>
+										Zaloguj się
+									</Typography>
+								</Link>
 							)}
 						</li>
 					</SiteNavigationList>

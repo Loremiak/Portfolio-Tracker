@@ -21,6 +21,6 @@
 		"noUnusedParameters": true,
 		"noFallthroughCasesInSwitch": true
 	},
-	"include": ["src"],
+	"include": ["src", "src/components/dataGrid/.tsx"],
 	"references": [{ "path": "./tsconfig.node.json" }]
 }

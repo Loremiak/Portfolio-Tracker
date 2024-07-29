@@ -1,20 +1,11 @@
-import {
-	GridRowsProp,
-	GridColDef,
-	DataGrid,
-	gridClasses,
-	GridRowSelectionModel,
-	GridCallbackDetails,
-} from '@mui/x-data-grid';
+import { DataGrid, gridClasses, GridRowSelectionModel, GridCallbackDetails } from '@mui/x-data-grid';
 import styled from 'styled-components';
-import roundToTwoDecimalPlaces from '../helpers/roundToTwoDecimalPlaces';
-import handleBiggerValues from '../helpers/handleBiggerValues';
-import { Link } from 'react-router-dom';
-import { Coins, Transaction } from '../services/types';
-import { Button } from '@mui/material';
+import { Coins, Transaction } from '../../services/types';
 import { useState } from 'react';
-import PortfolioHandleModal from './modals/PortfolioHandleModal';
-import useAuth from '../hooks/useAuth';
+import PortfolioHandleModal from '../modals/PortfolioHandleModal';
+import useAuth from '../../hooks/useAuth';
+import { createColumns } from './columnsConfig';
+import { createRows } from './rowsConfig';
 
 // export const mockedMarketData = [
 // 	{
@@ -107,7 +98,7 @@ import useAuth from '../hooks/useAuth';
 // 	},
 // ];
 
-const StyledDataGrid: React.FC<{
+type StyledDataGridProps = {
 	data: Coins;
 	onRowSelectionModelChange:
 		| ((rowSelectionModel: GridRowSelectionModel, details: GridCallbackDetails) => void)
@@ -116,7 +107,16 @@ const StyledDataGrid: React.FC<{
 	onTransactionSubmit?: (coin: string, amount: number, price: number) => void;
 	onTransactionRemove?: (coin: string) => void;
 	transactions?: Transaction[];
-}> = ({ data, onRowSelectionModelChange, isPortfolioView, onTransactionSubmit, onTransactionRemove, transactions }) => {
+};
+
+const StyledDataGrid: React.FC<StyledDataGridProps> = ({
+	data,
+	onRowSelectionModelChange,
+	isPortfolioView,
+	onTransactionSubmit,
+	onTransactionRemove,
+	transactions,
+}) => {
 	const [openModal, setOpenModal] = useState(false);
 	const [selectedCoin, setSelectedCoin] = useState<string>('');
 
@@ -127,143 +127,8 @@ const StyledDataGrid: React.FC<{
 		setOpenModal(true);
 	};
 
-	const rows: GridRowsProp = data.map(
-		({
-			id,
-			market_cap_rank,
-			image,
-			name,
-			symbol,
-			current_price,
-			price_change_percentage_24h,
-			total_volume,
-			market_cap,
-		}) => {
-			const transaction = (transactions ? transactions : []).find(t => t.coin === id);
-
-			return {
-				id,
-				col1: market_cap_rank,
-				image,
-				nameWithSymbol: `${name} ${symbol.toLocaleUpperCase()}`,
-				currentPrice: `${handleBiggerValues(current_price)} USD`,
-				dayChangeValue: roundToTwoDecimalPlaces(price_change_percentage_24h),
-				totalVolume: `${handleBiggerValues(total_volume)} USD`,
-				marketCap: `${handleBiggerValues(market_cap)} USD`,
-				totalAmount: transaction ? transaction.amount : 0,
-				currentValue: transaction ? `${handleBiggerValues(transaction.amount * current_price)} USD` : '0 USD',
-			};
-		}
-	);
-
-	const columns: GridColDef[] = [
-		{ field: 'col1', headerName: '#', width: 50, resizable: false, disableColumnMenu: true },
-		{
-			field: 'image',
-			headerName: '',
-			flex: 1,
-			maxWidth: 60,
-			resizable: false,
-			hideSortIcons: true,
-			disableColumnMenu: true,
-			disableReorder: true,
-			sortable: false,
-			renderCell: params => <StyledImg src={params.value} width='30px' />,
-		},
-		{
-			field: 'nameWithSymbol',
-			headerName: 'Waluta',
-			flex: 1,
-			resizable: false,
-			disableColumnMenu: true,
-			renderCell: params => <StyledLink to={`/coin-details/${params.id}`}>{params.value}</StyledLink>,
-		},
-		{
-			field: 'currentPrice',
-			headerName: 'Kurs',
-			flex: 1,
-			resizable: false,
-			disableColumnMenu: true,
-		},
-		{
-			field: 'dayChangeValue',
-			headerName: '24h',
-			flex: 1,
-			resizable: false,
-			disableColumnMenu: true,
-			renderCell: params => (
-				<StyledSpan $isPriceChangePositive={params.value > 0}>
-					{params.value > 0 ? `+${params.value}` : `${params.value}`}%
-				</StyledSpan>
-			),
-		},
-		{ field: 'totalVolume', headerName: 'Wolumen 24h', flex: 1, resizable: false, disableColumnMenu: true },
-		{ field: 'marketCap', headerName: 'Kapitalizacja rynkowa', flex: 1, resizable: false, disableColumnMenu: true },
-		{
-			field: 'totalAmount',
-			headerName: 'Ilość',
-			flex: 1,
-			resizable: false,
-			disableColumnMenu: true,
-		},
-		{
-			field: 'currentValue',
-			headerName: 'Wartość',
-			flex: 1,
-			resizable: false,
-			disableColumnMenu: true,
-		},
-		{
-			field: 'addValue',
-			headerName: transactions?.length ? 'Edytuj' : 'Dodaj',
-			flex: 1,
-			resizable: false,
-			disableColumnMenu: true,
-			sortable: false,
-			renderCell: params => {
-				console.log(transactions);
-				return (
-					<Button
-						sx={{
-							minWidth: '40px',
-						}}
-						onClick={() => {
-							handleAddButtonClick(params.row.id);
-						}}>
-						+
-					</Button>
-				);
-			},
-		},
-		{
-			field: 'removeValue',
-			headerName: 'Usuń',
-			flex: 1,
-			resizable: false,
-			disableColumnMenu: true,
-			sortable: false,
-			renderCell: params => {
-				const transaction = (transactions ? transactions : []).find(t => t.coin === params.row.id);
-
-				return (
-					<Button
-						sx={{
-							minWidth: '40px',
-						}}
-						onClick={() => {
-							if (onTransactionRemove) {
-								onTransactionRemove(params.row.id);
-							}
-						}}
-						disabled={!transaction || transaction.amount <= 0}>
-						-
-					</Button>
-				);
-			},
-		},
-	];
-
-	console.log('transactions', transactions);
+	const rows = createRows(data, transactions);
+	const columns = createColumns(handleAddButtonClick, transactions, onTransactionRemove);
 
 	return (
 		<>
@@ -286,7 +151,6 @@ const StyledDataGrid: React.FC<{
 						removeValue: isPortfolioView,
 						totalAmount: isPortfolioView,
 						currentValue: isPortfolioView,
-						lastSevenDays: !isPortfolioView,
 					}}
 					rows={rows}
 					columns={columns}
@@ -320,18 +184,4 @@ const DataGridContainer = styled.div`
 	margin: 1rem 0 3rem 0;
 	width: 100%;
 	flex: 1;
-`;
-
-const StyledSpan = styled.span<{ $isPriceChangePositive: boolean }>`
-	color: ${({ $isPriceChangePositive }) => ($isPriceChangePositive ? 'green' : 'red')};
-`;
-
-const StyledLink = styled(Link)`
-	text-decoration: none;
-	color: black;
-	padding: 1rem 0;
-`;
-
-const StyledImg = styled.img`
-	vertical-align: middle;
 `;

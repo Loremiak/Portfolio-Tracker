@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import StyledDataGrid from '../components/StyledDataGrid';
+import StyledDataGrid from '../components/dataGrid/StyledDataGrid';
 import BoxContainer from '../components/box/BoxContainer';
 import { useCryptocurrenciesList, useGlobalMarketData, useTrendingCoins } from '../services/api';
 import { Button, Divider, Pagination, Typography } from '@mui/material';

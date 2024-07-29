@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import StyledDataGrid from '../components/StyledDataGrid';
+import StyledDataGrid from '../components/dataGrid/StyledDataGrid';
 import { useCryptocurrenciesListByIds } from '../services/api';
 import { useAppSelector } from '../hooks/useAppSelector';
 import { selectedCoins, setSelectedCoins } from '../store/coinsSlice';

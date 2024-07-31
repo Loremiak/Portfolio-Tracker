@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Box from './Box';
 import roundToTwoDecimalPlaces from '../../helpers/roundToTwoDecimalPlaces';
-import Carousel from '../carousel/Carousel';
+import Carousel from '../Carousel';
 import React from 'react';
 import { Datum, GlobalMarketData } from '../../services/types';
 import { CircularProgress } from '@mui/material';

@@ -46,7 +46,7 @@ const Home = () => {
 					onClick={() => {
 						try {
 							dispatch(setSelectedCoins(coins));
-							toast.success('Waluty dodane pomyślnie!');
+							toast.success('Waluty dodano pomyślnie!');
 						} catch (error) {
 							toast.error('Wystąpił problem z dodaniem wybranych walut');
 							console.error(error);
@@ -72,11 +72,19 @@ const Home = () => {
 						<StyledPagination
 							count={5}
 							page={page}
-							onChange={(_, page) => setPage(page)}
+							onChange={(_, page) => {
+								setPage(page);
+							}}
 							color='primary'
 							shape='rounded'
 						/>
-						<SelectOptions pageSize={pageSize} handleChange={event => setPageSize(event.target.value as string)} />
+						<SelectOptions
+							pageSize={pageSize}
+							handleChange={event => {
+								setPage(1);
+								setPageSize(event.target.value as string);
+							}}
+						/>
 					</PaginationContainer>
 				</>
 			) : null}

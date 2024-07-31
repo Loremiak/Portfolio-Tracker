@@ -2,9 +2,9 @@ import styled from 'styled-components';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import roundToTwoDecimalPlaces from '../../helpers/roundToTwoDecimalPlaces';
-import handleBiggerValues from '../../helpers/handleBiggerValues';
-import { TrendingCoinsData } from '../../services/types';
+import roundToTwoDecimalPlaces from '../helpers/roundToTwoDecimalPlaces';
+import handleBiggerValues from '../helpers/handleBiggerValues';
+import { TrendingCoinsData } from '../services/types';
 import React from 'react';
 
 const Carousel: React.FC<TrendingCoinsData> = ({ coins }) => {

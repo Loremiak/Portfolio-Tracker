@@ -1,9 +1,9 @@
 import { GridColDef } from '@mui/x-data-grid';
-import { Button, Typography } from '@mui/material';
+import { Button } from '@mui/material';
 import { Transaction } from '../../services/types';
-import { Link } from 'react-router-dom';
 import PriceChangeSpan from './PriceChangeSpan';
 import { Box } from '@mui/system';
+import StyledLink from '../StyledLink';
 
 export const createColumns = (
 	handleAddButtonClick: (rowId: string) => void,
@@ -34,11 +34,7 @@ export const createColumns = (
 		resizable: false,
 		disableColumnMenu: true,
 		renderCell: ({ id, value }) => (
-			<Link to={`/coin-details/${id}`}>
-				<Typography color='black' fontSize='1rem' marginTop='14px'>
-					{value}
-				</Typography>
-			</Link>
+			<StyledLink linkTo={`/coin-details/${id}`} label={value} color='black' marginTop='14px' fontSize='0.9rem' />
 		),
 	},
 	{

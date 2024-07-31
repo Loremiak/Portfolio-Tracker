@@ -1,10 +1,10 @@
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Logo from '../Logo';
 import { useGlobalMarketData } from '../../services/api';
 import MarketDataList from './MarketDataList';
-import { Button, Typography } from '@mui/material';
+import { Button } from '@mui/material';
 import useAuth from '../../hooks/useAuth';
+import StyledLink from '../StyledLink';
 
 const Navbar = () => {
 	const { data: globalMarketData, isLoading: isMarketDataLoading } = useGlobalMarketData();
@@ -22,36 +22,20 @@ const Navbar = () => {
 				<div>
 					<MenuItemList>
 						<li>
-							<Link to='/'>
-								<Typography color='#021526' fontWeight='bolder'>
-									Strona główna
-								</Typography>
-							</Link>
+							<StyledLink label='Strona główna' fontWeight='bolder' />
 						</li>
 						{isAuthenticated ? (
 							<li>
-								<Link to='/portfolio'>
-									<Typography color='#021526' fontWeight='bolder'>
-										Portfolio
-									</Typography>
-								</Link>
+								<StyledLink linkTo='/portfolio' label='Portfolio' fontWeight='bolder' />
 							</li>
 						) : null}
 						<li>
 							{isAuthenticated ? (
 								<Button onClick={logout} variant='contained' color='error'>
-									<Link to='/'>
-										<Typography color='#E2E2B6' fontWeight='bolder' fontSize='0.75rem'>
-											Wyloguj się
-										</Typography>
-									</Link>
+									<StyledLink label='Wyloguj się' color='#E2E2B6' fontWeight='bolder' fontSize='0.75rem' />
 								</Button>
 							) : (
-								<Link to='/login'>
-									<Typography color='#021526' fontWeight='bolder'>
-										Zaloguj się
-									</Typography>
-								</Link>
+								<StyledLink linkTo='/login' label='Zaloguj się' color='#021526' fontWeight='bolder' />
 							)}
 						</li>
 					</MenuItemList>

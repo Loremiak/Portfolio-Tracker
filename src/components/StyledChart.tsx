@@ -16,8 +16,8 @@ const StyledChart: React.FC<ChartData> = ({ prices }) => {
 				datasets: [
 					{
 						data: prices.map(coin => coin[1]),
-						label: '',
-						borderColor: '#EEBC1D',
+						label: 'Wartość',
+						borderColor: '#6EACDA',
 					},
 				],
 			}}

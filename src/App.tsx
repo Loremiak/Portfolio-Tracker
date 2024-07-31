@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import Auth from './pages/Auth';
 import { ResetPassword } from './pages/ResetPassword';
 import useAuth from './hooks/useAuth';
+import Error from './components/Error';
 
 function App() {
 	const location = useLocation();
@@ -26,10 +27,10 @@ function App() {
 							<Route index element={<Home />} />
 							{isAuthenticated ? <Route path='/portfolio' element={<Portfolio />} /> : null}
 							<Route path='/coin-details/:id' element={<CoinDetails />} />
-							<Route path='/login' element={<Auth redirectPath='/' isLoginForm />} />
-							<Route path='/register' element={<Auth redirectPath='/login' />} />
+							<Route path='/login' element={<Auth isLoginForm />} />
+							<Route path='/register' element={<Auth />} />
 							<Route path='/reset-password' element={<ResetPassword />} />
-							<Route path='*' element={<>Error</>} />
+							<Route path='*' element={<Error />} />
 						</Route>
 					</Routes>
 				</Content>

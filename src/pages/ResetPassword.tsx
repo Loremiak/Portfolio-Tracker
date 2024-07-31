@@ -3,8 +3,8 @@ import { sendPasswordResetEmail } from 'firebase/auth';
 import { useState } from 'react';
 import styled from 'styled-components';
 import { auth } from '../firebase/firebase';
-import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import StyledLink from '../components/StyledLink';
 
 export const ResetPassword = () => {
 	const [email, setEmail] = useState('');
@@ -41,11 +41,7 @@ export const ResetPassword = () => {
 					}}
 				/>
 				<ButtonContainer>
-					<Link to='/login'>
-						<Typography color='#03346E' fontSize='1rem'>
-							Powrót
-						</Typography>
-					</Link>
+					<StyledLink linkTo='/login' label='Powrót' color='#03346E' />
 					<Button type='submit' variant='contained'>
 						Zresetuj hasło
 					</Button>
@@ -60,6 +56,7 @@ const Container = styled.div`
 	justify-content: center;
 	height: 100vh;
 	align-items: center;
+	background-color: white;
 `;
 
 const AuthPanel = styled.form`

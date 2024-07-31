@@ -9,7 +9,6 @@ const MarketDataList: React.FC<{ globalMarketData: GlobalMarketData; isLoading: 
 	globalMarketData,
 	isLoading,
 }) => {
-	console.log(globalMarketData);
 	return (
 		<BasicInfoList>
 			<li>

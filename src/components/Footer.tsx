@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import Logo from './Logo';
-import { Divider, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Divider } from '@mui/material';
 import FacebookIcon from '../assets/facebook-icon.svg';
 import TwitterIcon from '../assets/twitter-icon.svg';
 import YouTubeIcon from '../assets/youtube-icon.svg';
 import useAuth from '../hooks/useAuth';
+import StyledLink from './StyledLink';
 
 const Footer = () => {
 	const { isAuthenticated } = useAuth();
@@ -28,25 +28,13 @@ const Footer = () => {
 					<p>Strony</p>
 					<SiteNavigationList>
 						<li>
-							<Link to='/'>
-								<Typography color='#03346E' fontSize='1rem'>
-									Strona główna
-								</Typography>
-							</Link>
+							<StyledLink label='Strona główna' />
 						</li>
 						<li>
 							{isAuthenticated ? (
-								<Link to='/portfolio'>
-									<Typography color='#03346E' fontSize='1rem'>
-										Portfolio
-									</Typography>
-								</Link>
+								<StyledLink linkTo='/portfolio' label='Portfolio' />
 							) : (
-								<Link to='/login'>
-									<Typography color='#03346E' fontSize='1rem'>
-										Zaloguj się
-									</Typography>
-								</Link>
+								<StyledLink linkTo='/login' label='Zaloguj się' />
 							)}
 						</li>
 					</SiteNavigationList>

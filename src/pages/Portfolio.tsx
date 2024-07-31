@@ -9,9 +9,9 @@ import { useState } from 'react';
 import { GridRowSelectionModel } from '@mui/x-data-grid';
 import { compareArrays } from '../helpers/compareArrays';
 import ConfirmModal from '../components/modals/ConfirmModal';
-import { Link } from 'react-router-dom';
 import { Transaction } from '../services/types';
 import { toast } from 'react-toastify';
+import StyledLink from '../components/StyledLink';
 
 // const mockedBTCETH = [
 // 	{
@@ -124,21 +124,24 @@ const Portfolio = () => {
 		setTransactions(transactions.filter(transaction => transaction.coin !== coin));
 	};
 
-	const calculateTotalValue = () => {
-		return transactions.reduce((total, transaction) => {
-			const coin = (portfolioCoins ? portfolioCoins : []).find(c => c.id === transaction.coin);
+	const calculateTotalValue = transactions.reduce((total, transaction) => {
+		const coin = (portfolioCoins ? portfolioCoins : []).find(c => c.id === transaction.coin);
 
-			if (coin) {
-				total += transaction.amount * coin.current_price;
-			}
+		if (coin) {
+			total += transaction.amount * coin.current_price;
+		}
 
-			return total;
-		}, 0);
-	};
+		return total;
+	}, 0);
 
-	const calculateTotalSpent = () => {
-		return transactions.reduce((total, transaction) => total + transaction.amount * transaction.price, 0);
-	};
+	const calculateTotalSpent = transactions.reduce(
+		(total, transaction) => total + transaction.amount * transaction.price,
+		0
+	);
+
+	// podłączenie pod api
+	// edit zamiast dodawania
+	// modal przy usuwaniu
 
 	return (
 		<PortfolioContainer>
@@ -154,19 +157,15 @@ const Portfolio = () => {
 			{portfolioCoins && selectedCoinsSelector.length > 0 ? (
 				<>
 					<PortfolioValueData>
-						<p>Suma wydatków: {calculateTotalSpent().toFixed(2)} USD</p>
-						<p>Obecne saldo: {calculateTotalValue().toFixed(2)} USD</p>
-						<p>Całkowity zysk/strata: {calculateTotalValue() - calculateTotalSpent()} USD</p>
+						<p>Suma wydatków: {calculateTotalSpent.toFixed(2)} USD</p>
+						<p>Obecne saldo: {calculateTotalValue.toFixed(2)} USD</p>
+						<p>Całkowity zysk/strata: {calculateTotalValue - calculateTotalSpent} USD</p>
 					</PortfolioValueData>
 					<ButtonsContainer>
 						<Button variant='outlined' disabled={!coinsToDelete.length} onClick={() => setIsConfirmModalOpen(true)}>
 							Usuń zaznaczone waluty
 						</Button>
-						<Button
-							variant='outlined'
-							onClick={() => {
-								setIsConfirmModalOpen(true);
-							}}>
+						<Button variant='outlined' onClick={() => setIsConfirmModalOpen(true)}>
 							Usuń wszystkie waluty
 						</Button>
 						<ConfirmModal
@@ -186,11 +185,12 @@ const Portfolio = () => {
 					/>
 				</>
 			) : (
-				<Link to='/'>
-					<Typography marginTop='1.5rem' color='#6EACDA' fontWeight='bolder'>
-						Udaj się na stronę główną aby dodać wybrane waluty do portfolio
-					</Typography>
-				</Link>
+				<StyledLink
+					label='Udaj się na stronę główną aby dodać wybrane waluty do portfolio'
+					marginTop='1.5rem'
+					color='#6EACDA'
+					fontWeight='bolder'
+				/>
 			)}
 		</PortfolioContainer>
 	);

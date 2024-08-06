@@ -2,8 +2,9 @@ import { GridRowsProp } from '@mui/x-data-grid';
 import handleBiggerValues from '../../helpers/handleBiggerValues';
 import roundToTwoDecimalPlaces from '../../helpers/roundToTwoDecimalPlaces';
 import { Coins, Transaction } from '../../services/types';
+import { DocumentData } from 'firebase/firestore';
 
-export const createRows = (data: Coins, transactions?: Transaction[]): GridRowsProp =>
+export const createRows = (data: Coins, transactions?: Transaction[] | DocumentData[]): GridRowsProp =>
 	data.map(
 		({
 			id,

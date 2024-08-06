@@ -1,4 +1,5 @@
 import { Divider } from '@mui/material';
+import React from 'react';
 import styled from 'styled-components';
 
 type CoinInfoContainerProps = {
@@ -17,26 +18,10 @@ const CoinInfoContainer: React.FC<CoinInfoContainerProps> = ({
 	return (
 		<DetailsContainer>
 			<Divider color='#6eacda' />
-			<DetailsCoinInfo>
-				<p>Kapitalizacja rynkowa</p>
-				<p>{marketCap}</p>
-			</DetailsCoinInfo>
-			<Divider color='#6eacda' />
-			<DetailsCoinInfo>
-				<p>24 godz. wolumen handlu</p>
-				<p>{totalVolume}</p>
-			</DetailsCoinInfo>
-			<Divider color='#6eacda' />
-			<DetailsCoinInfo>
-				<p>Zasoby w obiegu</p>
-				<p>{circulatingSupply}</p>
-			</DetailsCoinInfo>
-			<Divider color='#6eacda' />
-			<DetailsCoinInfo>
-				<p>Maksymalne zasoby</p>
-				<p>{maxSupply}</p>
-			</DetailsCoinInfo>
-			<Divider color='#6eacda' />
+			<DetailCoin label='Kapitalizacja rynkowa' info={marketCap} />
+			<DetailCoin label='24 godz. wolumen handlu' info={totalVolume} />
+			<DetailCoin label='Zasoby w obiegu' info={circulatingSupply} />
+			<DetailCoin label='Maksymalne zasoby' info={maxSupply} />
 		</DetailsContainer>
 	);
 };
@@ -52,5 +37,17 @@ const DetailsCoinInfo = styled.div`
 	display: flex;
 	justify-content: space-between;
 `;
+
+const DetailCoin: React.FC<{ label: string; info: number }> = ({ label, info }) => {
+	return (
+		<>
+			<DetailsCoinInfo>
+				<p>{label}</p>
+				<p>{info}</p>
+			</DetailsCoinInfo>
+			<Divider color='#6eacda' />
+		</>
+	);
+};
 
 export default CoinInfoContainer;

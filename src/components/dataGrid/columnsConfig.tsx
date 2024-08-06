@@ -4,11 +4,12 @@ import { Transaction } from '../../services/types';
 import PriceChangeSpan from './PriceChangeSpan';
 import { Box } from '@mui/system';
 import StyledLink from '../StyledLink';
+import { DocumentData } from 'firebase/firestore';
 
 export const createColumns = (
 	handleAddButtonClick: (rowId: string) => void,
-	transactions?: Transaction[],
-	onTransactionRemove?: (coin: string) => void
+	transactions?: Transaction[] | DocumentData[],
+	handleRemoveTransaction?: (coin: string) => void
 ): GridColDef[] => [
 	{ field: 'col1', headerName: '#', width: 50, resizable: false, disableColumnMenu: true },
 	{
@@ -105,8 +106,8 @@ export const createColumns = (
 						minWidth: '40px',
 					}}
 					onClick={() => {
-						if (onTransactionRemove) {
-							onTransactionRemove(row.id);
+						if (handleRemoveTransaction) {
+							handleRemoveTransaction(row.id);
 						}
 					}}
 					disabled={!transaction || transaction.amount <= 0}>

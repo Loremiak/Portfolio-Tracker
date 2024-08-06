@@ -6,6 +6,8 @@ import PortfolioHandleModal from '../modals/PortfolioHandleModal';
 import useAuth from '../../hooks/useAuth';
 import { createColumns } from './columnsConfig';
 import { createRows } from './rowsConfig';
+import ConfirmModal from '../modals/ConfirmModal';
+import { DocumentData } from 'firebase/firestore';
 
 // export const mockedMarketData = [
 // 	{
@@ -106,7 +108,7 @@ type StyledDataGridProps = {
 	isPortfolioView: boolean;
 	onTransactionSubmit?: (coin: string, amount: number, price: number) => void;
 	onTransactionRemove?: (coin: string) => void;
-	transactions?: Transaction[];
+	transactions?: Transaction[] | DocumentData[];
 };
 
 const StyledDataGrid: React.FC<StyledDataGridProps> = ({
@@ -115,9 +117,12 @@ const StyledDataGrid: React.FC<StyledDataGridProps> = ({
 	isPortfolioView,
 	onTransactionSubmit,
 	onTransactionRemove,
-	transactions,
+	transactions = [],
 }) => {
 	const [openModal, setOpenModal] = useState(false);
+	const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
+	const [coinToDelete, setCoinToDelete] = useState<string | null>(null);
+
 	const [selectedCoin, setSelectedCoin] = useState<string>('');
 
 	const { isAuthenticated } = useAuth();
@@ -127,8 +132,13 @@ const StyledDataGrid: React.FC<StyledDataGridProps> = ({
 		setOpenModal(true);
 	};
 
+	const handleDeleteButtonClick = (coin: string) => {
+		setCoinToDelete(coin);
+		setOpenConfirmationModal(true);
+	};
+
 	const rows = createRows(data, transactions);
-	const columns = createColumns(handleAddButtonClick, transactions, onTransactionRemove);
+	const columns = createColumns(handleAddButtonClick, transactions, handleDeleteButtonClick);
 
 	return (
 		<>
@@ -140,8 +150,19 @@ const StyledDataGrid: React.FC<StyledDataGridProps> = ({
 					if (onTransactionSubmit) {
 						onTransactionSubmit(selectedCoin, amount, price);
 					}
-
 					setOpenModal(false);
+				}}
+			/>
+			<ConfirmModal
+				open={openConfirmationModal}
+				onClose={() => setOpenConfirmationModal(false)}
+				title='Czy na pewno chcesz usunąć tę transakcję?'
+				onConfirm={() => {
+					if (coinToDelete && onTransactionRemove) {
+						onTransactionRemove(coinToDelete);
+					}
+					setOpenConfirmationModal(false);
+					setCoinToDelete(null);
 				}}
 			/>
 			<DataGridContainer>

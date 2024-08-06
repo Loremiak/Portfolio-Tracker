@@ -19,11 +19,7 @@ const Auth: React.FC<AuthProps> = ({ isLoginForm }) => {
 
 	const { isAuthenticated } = useAuth();
 
-	console.log('isAuthenticated', isAuthenticated);
-
 	const navigate = useNavigate();
-
-	console.log(email, password, confirmPassword, isAuthenticated);
 
 	const onFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
@@ -103,7 +99,7 @@ const Auth: React.FC<AuthProps> = ({ isLoginForm }) => {
 				{isLoginForm ? (
 					<StyledLink linkTo='/reset-password' label='Zapomniałeś hasła?' fontSize='0.75rem' color='#6eacda' />
 				) : null}
-				<Typography sx={{ position: 'absolute', bottom: '0' }} fontSize='0.5rem' fontWeight='bold'>
+				<Typography position='absolute' bottom='0' fontSize='0.5rem' fontWeight='bold'>
 					Copyright by Portfolio Tracker
 				</Typography>
 			</AuthPanel>

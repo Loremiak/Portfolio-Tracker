@@ -3,28 +3,29 @@ import StyledDataGrid from '../components/dataGrid/StyledDataGrid';
 import BoxContainer from '../components/box/BoxContainer';
 import { useCryptocurrenciesList, useGlobalMarketData, useTrendingCoins } from '../services/api';
 import { Button, Divider, Pagination, Typography } from '@mui/material';
-import { GridRowSelectionModel } from '@mui/x-data-grid';
 import { useState } from 'react';
-import { setSelectedCoins } from '../store/coinsSlice';
-import { useAppDispatch } from '../hooks/useAppDispatch';
 import SelectOptions from '../components/SelectOptions';
 import useAuth from '../hooks/useAuth';
-import { toast } from 'react-toastify';
+import { useUpdatePortfolioCoins } from '../services/firebaseApi';
 
 const Home = () => {
 	const { isAuthenticated } = useAuth();
 
-	const [coins, setCoins] = useState<GridRowSelectionModel>([]);
+	const [coins, setCoins] = useState<string[]>([]);
 	const [page, setPage] = useState(1);
 	const [pageSize, setPageSize] = useState('5');
-
-	const dispatch = useAppDispatch();
 
 	const { data: trendingData, isLoading: isCarouselDataLoading } = useTrendingCoins();
 
 	const { data: coinList } = useCryptocurrenciesList(page, pageSize);
 
 	const { data: globalMarketData, isLoading: isMarketDataLoading } = useGlobalMarketData();
+
+	const updatePortfolioCoinsMutation = useUpdatePortfolioCoins();
+
+	const updatePortfolioCoins = () => {
+		updatePortfolioCoinsMutation.mutate(coins);
+	};
 
 	return (
 		<div>
@@ -41,17 +42,7 @@ const Home = () => {
 				/>
 			) : null}
 			{coins.length > 0 ? (
-				<Button
-					variant='outlined'
-					onClick={() => {
-						try {
-							dispatch(setSelectedCoins(coins));
-							toast.success('Waluty dodano pomyślnie!');
-						} catch (error) {
-							toast.error('Wystąpił problem z dodaniem wybranych walut');
-							console.error(error);
-						}
-					}}>
+				<Button variant='outlined' onClick={updatePortfolioCoins}>
 					Dodaj zaznaczone waluty do portfolio ({coins.length})
 				</Button>
 			) : (
@@ -65,7 +56,7 @@ const Home = () => {
 				<>
 					<StyledDataGrid
 						data={coinList}
-						onRowSelectionModelChange={selected => setCoins(selected)}
+						onRowSelectionModelChange={selected => setCoins(selected as string[])}
 						isPortfolioView={false}
 					/>
 					<PaginationContainer>

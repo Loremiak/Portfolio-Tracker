@@ -28,7 +28,9 @@ const useAuth = () => {
 		}
 	};
 
-	return { isAuthenticated, logout };
+	const userId = auth.currentUser?.uid;
+
+	return { isAuthenticated, logout, userId };
 };
 
 export default useAuth;

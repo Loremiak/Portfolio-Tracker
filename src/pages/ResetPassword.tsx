@@ -1,10 +1,10 @@
 import { Typography, TextField, Button } from '@mui/material';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { useState } from 'react';
-import styled from 'styled-components';
 import { auth } from '../firebase/firebase';
 import { toast } from 'react-toastify';
 import StyledLink from '../components/StyledLink';
+import { Box } from '@mui/system';
 
 export const ResetPassword = () => {
 	const [email, setEmail] = useState('');
@@ -22,8 +22,18 @@ export const ResetPassword = () => {
 	};
 
 	return (
-		<Container>
-			<AuthPanel onSubmit={onFormSubmit}>
+		<Box display='flex' justifyContent='center' height='100vh' alignItems='center' bgcolor='white'>
+			<Box
+				onSubmit={onFormSubmit}
+				component='form'
+				display='flex'
+				justifyContent='center'
+				alignItems='center'
+				flexDirection='column'
+				gap='1.5rem'
+				border='1px solid black'
+				padding='2.5rem'
+				width='400px'>
 				<Typography variant='h5' align='center'>
 					Zresetuj swoje hasło
 				</Typography>
@@ -40,38 +50,13 @@ export const ResetPassword = () => {
 						setEmail(e.target.value);
 					}}
 				/>
-				<ButtonContainer>
+				<Box display='flex' gap='1rem' alignItems='center'>
 					<StyledLink linkTo='/login' label='Powrót' color='#03346E' />
 					<Button type='submit' variant='contained'>
 						Zresetuj hasło
 					</Button>
-				</ButtonContainer>
-			</AuthPanel>
-		</Container>
+				</Box>
+			</Box>
+		</Box>
 	);
 };
-
-const Container = styled.div`
-	display: flex;
-	justify-content: center;
-	height: 100vh;
-	align-items: center;
-	background-color: white;
-`;
-
-const AuthPanel = styled.form`
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	gap: 1.5rem;
-	border: 1px solid black;
-	padding: 2.5rem;
-	width: 400px;
-`;
-
-const ButtonContainer = styled.div`
-	display: flex;
-	gap: 1rem;
-	align-items: center;
-`;

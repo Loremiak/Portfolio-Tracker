@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import StyledDataGrid from '../components/dataGrid/StyledDataGrid';
 import BoxContainer from '../components/box/BoxContainer';
 import { useCryptocurrenciesList, useGlobalMarketData, useTrendingCoins } from '../services/api';
@@ -7,6 +6,7 @@ import { useState } from 'react';
 import SelectOptions from '../components/SelectOptions';
 import useAuth from '../hooks/useAuth';
 import { useUpdatePortfolioCoins } from '../services/firebaseApi';
+import { Box } from '@mui/system';
 
 const Home = () => {
 	const { isAuthenticated } = useAuth();
@@ -29,10 +29,12 @@ const Home = () => {
 
 	return (
 		<div>
-			<StyledHeaderContainer>
-				<StyledHeader>Ceny kryptowalut według kapitalizacji rynkowej</StyledHeader>
+			<Box margin='4rem 0'>
+				<Typography variant='h1' fontSize='2rem' marginBottom='0.75rem'>
+					Ceny kryptowalut według kapitalizacji rynkowej
+				</Typography>
 				<Divider sx={{ borderBottomWidth: 2 }} color='#6eacda' />
-			</StyledHeaderContainer>
+			</Box>
 			{trendingData && globalMarketData ? (
 				<BoxContainer
 					coins={trendingData}
@@ -59,13 +61,15 @@ const Home = () => {
 						onRowSelectionModelChange={selected => setCoins(selected as string[])}
 						isPortfolioView={false}
 					/>
-					<PaginationContainer>
-						<StyledPagination
+					<Box display='flex' justifyContent='center' gap='2rem'>
+						<Pagination
+							sx={{
+								display: 'flex',
+								justifyContent: 'center',
+							}}
 							count={5}
 							page={page}
-							onChange={(_, page) => {
-								setPage(page);
-							}}
+							onChange={(_, page) => setPage(page)}
 							color='primary'
 							shape='rounded'
 						/>
@@ -76,7 +80,7 @@ const Home = () => {
 								setPageSize(event.target.value as string);
 							}}
 						/>
-					</PaginationContainer>
+					</Box>
 				</>
 			) : null}
 		</div>
@@ -84,24 +88,3 @@ const Home = () => {
 };
 
 export default Home;
-
-const StyledHeaderContainer = styled.div`
-	margin: 4rem 0;
-	font-size: 2rem;
-`;
-
-const StyledHeader = styled.h1`
-	font-size: 2rem;
-	margin-bottom: 0.75rem;
-`;
-
-const StyledPagination = styled(Pagination)`
-	display: flex;
-	justify-content: center;
-`;
-
-const PaginationContainer = styled.div`
-	display: flex;
-	justify-content: center;
-	gap: 2rem;
-`;

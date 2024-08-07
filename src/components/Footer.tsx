@@ -1,11 +1,11 @@
-import styled from 'styled-components';
 import Logo from './Logo';
-import { Divider } from '@mui/material';
+import { Divider, List, Typography } from '@mui/material';
 import FacebookIcon from '../assets/facebook-icon.svg';
 import TwitterIcon from '../assets/twitter-icon.svg';
 import YouTubeIcon from '../assets/youtube-icon.svg';
 import useAuth from '../hooks/useAuth';
 import StyledLink from './StyledLink';
+import { Box } from '@mui/system';
 
 const Footer = () => {
 	const { isAuthenticated } = useAuth();
@@ -13,20 +13,28 @@ const Footer = () => {
 	const iconArray = [FacebookIcon, TwitterIcon, YouTubeIcon];
 
 	return (
-		<FooterContainer>
-			<InfoContainer>
-				<LogoContainer>
+		<Box padding='1rem' marginTop='3rem' width='100%' border='2px solid #6eacda'>
+			<Box display='flex' justifyContent='space-between' padding='1rem' gap='15rem'>
+				<Box width='400px'>
 					<Logo />
 					<Divider color='#6eacda' />
-					<SiteDescription>
+					<Typography fontSize='0.9rem' paddingTop='1rem'>
 						Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro aliquid adipisci labore ipsum a recusandae
 						perspiciatis nisi. Ipsa iste eligendi, nesciunt non tempora, ex, voluptatum voluptates nobis suscipit
 						placeat corrupti.
-					</SiteDescription>
-				</LogoContainer>
-				<ListContainer>
+					</Typography>
+				</Box>
+				<Box display='flex' gap='2rem' flexDirection='column' alignItems='center' marginTop='1rem'>
 					<p>Strony</p>
-					<SiteNavigationList>
+					<List
+						sx={{
+							listStyleType: 'none',
+							display: 'flex',
+							flexDirection: 'column',
+							justifyContent: 'center',
+							gap: '2rem',
+							marginLeft: '0.5rem',
+						}}>
 						<li>
 							<StyledLink label='Strona główna' />
 						</li>
@@ -37,74 +45,24 @@ const Footer = () => {
 								<StyledLink linkTo='/login' label='Zaloguj się' />
 							)}
 						</li>
-					</SiteNavigationList>
-				</ListContainer>
-				<ListContainer>
+					</List>
+				</Box>
+				<Box display='flex' gap='2rem' flexDirection='column' alignItems='center' marginTop='1rem'>
 					<p>Społeczność</p>
-					<IconList>
+					<List sx={{ listStyleType: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 						{iconArray.map(icon => (
 							<li key={icon}>
 								<img src={icon} alt='Community icons' />
 							</li>
 						))}
-					</IconList>
-				</ListContainer>
-			</InfoContainer>
-			<CoingeckoInfo>API powered by Coingecko </CoingeckoInfo>
-		</FooterContainer>
+					</List>
+				</Box>
+			</Box>
+			<Typography display='flex' justifyContent='center'>
+				API powered by Coingecko{' '}
+			</Typography>
+		</Box>
 	);
 };
 
 export default Footer;
-
-const FooterContainer = styled.div`
-	border: 2px solid #6eacda;
-	padding: 1rem;
-	margin-top: 3rem;
-	width: 100%;
-`;
-
-const InfoContainer = styled.div`
-	display: flex;
-	justify-content: space-between;
-	padding: 1rem;
-	gap: 15rem;
-`;
-
-const LogoContainer = styled.div`
-	width: 400px;
-`;
-
-const SiteDescription = styled.p`
-	font-size: 1rem;
-	padding-top: 2rem;
-`;
-
-const SiteNavigationList = styled.ul`
-	list-style-type: none;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	gap: 2rem;
-	margin-left: 0.5rem;
-`;
-
-const ListContainer = styled.div`
-	display: flex;
-	gap: 2rem;
-	flex-direction: column;
-	align-items: center;
-	margin-top: 1rem;
-`;
-
-const IconList = styled.ul`
-	list-style-type: none;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-`;
-
-const CoingeckoInfo = styled.p`
-	display: flex;
-	justify-content: center;
-`;

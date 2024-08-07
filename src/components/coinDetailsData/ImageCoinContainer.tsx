@@ -1,4 +1,5 @@
-import styled from 'styled-components';
+import { Typography } from '@mui/material';
+import { Box } from '@mui/system';
 
 type ImageCoinContainer = {
 	imgSrc: string;
@@ -16,32 +17,20 @@ const ImageCoinContainer: React.FC<ImageCoinContainer> = ({
 	currentPrice,
 }) => {
 	return (
-		<ImageContainer>
-			<StyledImg src={imgSrc} alt={coinName} />
+		<Box display='flex' flexDirection='column' alignItems='center' marginBottom='1.5rem'>
+			<Box component='img' src={imgSrc} alt={coinName} width='150px'></Box>
 			<p>
-				<BoldText>{coinName} </BoldText>
+				<Typography component='span' fontWeight='bold' fontSize='1.5rem'>
+					{coinName}{' '}
+				</Typography>
 				<span>Kurs {coinSymbol.toUpperCase()} </span>
 				<span>#{marketCapRank} </span>
 			</p>
-			<BoldText>{currentPrice} USD</BoldText>
-		</ImageContainer>
+			<Typography component='span' fontWeight='bold' fontSize='1.5rem'>
+				{currentPrice} USD
+			</Typography>
+		</Box>
 	);
 };
-
-const ImageContainer = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	margin-bottom: 1.5rem;
-`;
-
-const StyledImg = styled.img`
-	width: 150px;
-`;
-
-const BoldText = styled.span`
-	font-weight: bold;
-	font-size: 1.5rem;
-`;
 
 export default ImageCoinContainer;

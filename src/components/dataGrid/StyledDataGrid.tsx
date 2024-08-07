@@ -1,5 +1,4 @@
 import { DataGrid, gridClasses, GridRowSelectionModel, GridCallbackDetails } from '@mui/x-data-grid';
-import styled from 'styled-components';
 import { Coins, Transaction } from '../../services/types';
 import { useState } from 'react';
 import PortfolioHandleModal from '../modals/PortfolioHandleModal';
@@ -8,6 +7,7 @@ import { createColumns } from './columnsConfig';
 import { createRows } from './rowsConfig';
 import ConfirmModal from '../modals/ConfirmModal';
 import { DocumentData } from 'firebase/firestore';
+import { Box } from '@mui/system';
 
 // export const mockedMarketData = [
 // 	{
@@ -165,7 +165,7 @@ const StyledDataGrid: React.FC<StyledDataGridProps> = ({
 					setCoinToDelete(null);
 				}}
 			/>
-			<DataGridContainer>
+			<Box margin='1rem 0 3rem 0' width='100%' flex='1'>
 				<DataGrid
 					columnVisibilityModel={{
 						addValue: isPortfolioView,
@@ -194,15 +194,9 @@ const StyledDataGrid: React.FC<StyledDataGridProps> = ({
 						backgroundColor: 'white',
 					}}
 				/>
-			</DataGridContainer>
+			</Box>
 		</>
 	);
 };
 
 export default StyledDataGrid;
-
-const DataGridContainer = styled.div`
-	margin: 1rem 0 3rem 0;
-	width: 100%;
-	flex: 1;
-`;

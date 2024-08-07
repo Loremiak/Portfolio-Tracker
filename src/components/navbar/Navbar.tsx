@@ -1,10 +1,10 @@
-import styled from 'styled-components';
 import Logo from '../Logo';
 import { useGlobalMarketData } from '../../services/api';
 import MarketDataList from './MarketDataList';
-import { Button } from '@mui/material';
+import { Button, List } from '@mui/material';
 import useAuth from '../../hooks/useAuth';
 import StyledLink from '../StyledLink';
+import { Box } from '@mui/system';
 
 const Navbar = () => {
 	const { data: globalMarketData, isLoading: isMarketDataLoading } = useGlobalMarketData();
@@ -17,10 +17,25 @@ const Navbar = () => {
 
 	return (
 		<>
-			<NavbarContainer>
+			<Box
+				component='nav'
+				display='flex'
+				alignItems='center'
+				justifyContent='space-between'
+				bgcolor='#eeeeee'
+				height='80px'
+				paddingRight='4rem'
+				borderLeft='2px solid #6eacda'
+				borderRight='2px solid #6eacda'>
 				<Logo />
 				<div>
-					<MenuItemList>
+					<List
+						sx={{
+							display: 'flex',
+							alignItems: 'center',
+							gap: '4rem',
+							listStyleType: 'none',
+						}}>
 						<li>
 							<StyledLink label='Strona główna' fontWeight='bolder' />
 						</li>
@@ -38,30 +53,12 @@ const Navbar = () => {
 								<StyledLink linkTo='/login' label='Zaloguj się' color='#021526' fontWeight='bolder' />
 							)}
 						</li>
-					</MenuItemList>
+					</List>
 				</div>
-			</NavbarContainer>
+			</Box>
 			{globalMarketData ? <MarketDataList globalMarketData={globalMarketData} isLoading={isMarketDataLoading} /> : null}
 		</>
 	);
 };
-
-const NavbarContainer = styled.nav`
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	background-color: #eeeeee;
-	height: 80px;
-	padding-right: 4rem;
-	border-left: 2px solid #6eacda;
-	border-right: 2px solid #6eacda;
-`;
-
-const MenuItemList = styled.ul`
-	display: flex;
-	align-items: center;
-	gap: 4rem;
-	list-style-type: none;
-`;
 
 export default Navbar;

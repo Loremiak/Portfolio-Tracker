@@ -4,11 +4,11 @@ import Home from './pages/Home';
 import Footer from './components/Footer';
 import Portfolio from './pages/Portfolio';
 import CoinDetails from './pages/CoinDetails';
-import styled from 'styled-components';
 import Auth from './pages/Auth';
 import { ResetPassword } from './pages/ResetPassword';
 import useAuth from './hooks/useAuth';
 import Error from './components/Error';
+import { Box } from '@mui/system';
 
 function App() {
 	const location = useLocation();
@@ -18,10 +18,16 @@ function App() {
 		location.pathname === '/login' || location.pathname === '/register' || location.pathname === '/reset-password';
 
 	return (
-		<FullViewContainer>
-			<AppContainer>
+		<Box width='100%' height='100%' bgcolor='#eeeeee'>
+			<Box
+				display='flex'
+				flexDirection='column'
+				minHeight='100vh'
+				maxWidth='1270px'
+				margin='0 auto'
+				position='relative'>
 				{!isAuthPage ? <Navbar /> : null}
-				<Content>
+				<Box flex='1'>
 					<Routes>
 						<Route path='/' element={<Outlet />}>
 							<Route index element={<Home />} />
@@ -33,30 +39,11 @@ function App() {
 							<Route path='*' element={<Error />} />
 						</Route>
 					</Routes>
-				</Content>
+				</Box>
 				{!isAuthPage ? <Footer /> : null}
-			</AppContainer>
-		</FullViewContainer>
+			</Box>
+		</Box>
 	);
 }
-
-const FullViewContainer = styled.div`
-	width: 100%;
-	height: 100%;
-	background-color: #eeeeee;
-`;
-
-const AppContainer = styled.div`
-	display: flex;
-	flex-direction: column;
-	min-height: 100vh;
-	max-width: 1270px;
-	margin: 0 auto;
-	position: relative;
-`;
-
-const Content = styled.div`
-	flex: 1;
-`;
 
 export default App;

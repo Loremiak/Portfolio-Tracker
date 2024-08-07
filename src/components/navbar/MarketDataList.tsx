@@ -1,5 +1,4 @@
-import { CircularProgress } from '@mui/material';
-import styled from 'styled-components';
+import { CircularProgress, List, Typography } from '@mui/material';
 import handleBiggerValues from '../../helpers/handleBiggerValues';
 import roundToTwoDecimalPlaces from '../../helpers/roundToTwoDecimalPlaces';
 import { formatNumber } from '../../helpers/formatNumber';
@@ -10,7 +9,15 @@ const MarketDataList: React.FC<{ globalMarketData: GlobalMarketData; isLoading: 
 	isLoading,
 }) => {
 	return (
-		<BasicInfoList>
+		<List
+			sx={{
+				display: 'flex',
+				justifyContent: 'space-between',
+				listStyleType: 'none',
+				padding: '0.5rem',
+				backgroundColor: '#6eacda',
+				height: '38px',
+			}}>
 			<li>
 				Waluty:
 				<span>
@@ -28,7 +35,10 @@ const MarketDataList: React.FC<{ globalMarketData: GlobalMarketData; isLoading: 
 					{isLoading ? <CircularProgress size='13px' /> : formatNumber(globalMarketData.total_market_cap.usd)}
 				</span>{' '}
 				USD
-				<StyledSpan $isMarketCapChangePositive={globalMarketData.market_cap_change_percentage_24h_usd > 0}>
+				<Typography
+					component='span'
+					fontWeight='bold'
+					color={globalMarketData.market_cap_change_percentage_24h_usd > 0 ? 'green' : 'red'}>
 					{' '}
 					{isLoading ? (
 						<CircularProgress size='13px' />
@@ -36,27 +46,13 @@ const MarketDataList: React.FC<{ globalMarketData: GlobalMarketData; isLoading: 
 						roundToTwoDecimalPlaces(globalMarketData.market_cap_change_percentage_24h_usd)
 					)}
 					%
-				</StyledSpan>
+				</Typography>
 			</li>
 			<li>
 				Wolumen: {isLoading ? <CircularProgress size='13px' /> : formatNumber(globalMarketData.total_volume.usd)} USD
 			</li>
-		</BasicInfoList>
+		</List>
 	);
 };
 
 export default MarketDataList;
-
-const BasicInfoList = styled.ul`
-	display: flex;
-	justify-content: space-between;
-	list-style-type: none;
-	padding: 0.5rem;
-	background-color: #6eacda;
-	height: 38px;
-`;
-
-const StyledSpan = styled.span<{ $isMarketCapChangePositive: boolean }>`
-	color: ${({ $isMarketCapChangePositive }) => ($isMarketCapChangePositive ? 'green' : 'red')};
-	font-weight: bold;
-`;

@@ -1,5 +1,4 @@
 import { Button, TextField, Typography } from '@mui/material';
-import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { auth } from '../firebase/firebase';
@@ -7,6 +6,7 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'fire
 import useAuth from '../hooks/useAuth';
 import { toast } from 'react-toastify';
 import StyledLink from '../components/StyledLink';
+import { Box } from '@mui/system';
 
 type AuthProps = {
 	isLoginForm?: boolean;
@@ -35,7 +35,7 @@ const Auth: React.FC<AuthProps> = ({ isLoginForm }) => {
 			}
 		}
 
-		if (!isLoginForm && !isAuthenticated) {
+		if (!isLoginForm && !isAuthenticated && confirmPassword === password) {
 			try {
 				await createUserWithEmailAndPassword(auth, email, password);
 				toast.success('Pomyślnie zarejestrowano!');
@@ -48,8 +48,19 @@ const Auth: React.FC<AuthProps> = ({ isLoginForm }) => {
 	};
 
 	return (
-		<AuthContainer>
-			<AuthPanel onSubmit={onFormSubmit}>
+		<Box display='flex' flexDirection='column' justifyContent='center' alignItems='center' height='100vh' gap='1rem'>
+			<Box
+				component='form'
+				onSubmit={onFormSubmit}
+				position='relative'
+				display='flex'
+				justifyContent='center'
+				alignItems='center'
+				flexDirection='column'
+				gap='1.5rem'
+				border='1px solid black'
+				padding='2.5rem'
+				bgcolor='white'>
 				<Typography variant='h4' align='center'>
 					{isLoginForm ? 'Zaloguj się' : 'Zarejestruj się'}
 				</Typography>
@@ -102,31 +113,10 @@ const Auth: React.FC<AuthProps> = ({ isLoginForm }) => {
 				<Typography position='absolute' bottom='0' fontSize='0.5rem' fontWeight='bold'>
 					Copyright by Portfolio Tracker
 				</Typography>
-			</AuthPanel>
+			</Box>
 			<StyledLink label='Powrót do strony głównej' color='#03346E' />
-		</AuthContainer>
+		</Box>
 	);
 };
 
 export default Auth;
-
-const AuthContainer = styled.div`
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	height: 100vh;
-	gap: 1rem;
-`;
-
-const AuthPanel = styled.form`
-	position: relative;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	gap: 1.5rem;
-	border: 1px solid black;
-	padding: 2.5rem;
-	background-color: white;
-`;

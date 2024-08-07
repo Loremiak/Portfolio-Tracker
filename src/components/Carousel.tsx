@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -6,6 +5,8 @@ import roundToTwoDecimalPlaces from '../helpers/roundToTwoDecimalPlaces';
 import handleBiggerValues from '../helpers/handleBiggerValues';
 import { TrendingCoinsData } from '../services/types';
 import React from 'react';
+import { Box } from '@mui/system';
+import { Typography } from '@mui/material';
 
 const Carousel: React.FC<TrendingCoinsData> = ({ coins }) => {
 	const settings = {
@@ -26,19 +27,35 @@ const Carousel: React.FC<TrendingCoinsData> = ({ coins }) => {
 
 				return (
 					<div key={item.symbol}>
-						<CoinContainer>
-							<StyledImg src={item.large} alt={item.symbol} />
-							<StyledParagraph>
+						<Box
+							display='flex'
+							alignItems='center'
+							justifyContent='center'
+							flexDirection='column'
+							padding='1.25rem 0.5rem'
+							margin='1rem'
+							bgcolor='white'>
+							<Box
+								component='img'
+								src={item.large}
+								alt={item.symbol}
+								width='auto'
+								height='75px'
+								sx={{ objectFit: 'cover' }}
+							/>
+							<Typography margin='1.5rem 0 0 0'>
 								{item.symbol}
-								<StyledSpan $isPriceChangePositive={isPriceChangePositive}>
+								<Typography component='span' color={isPriceChangePositive ? 'green' : 'red'}>
 									{isPriceChangePositive
 										? ` +${roundToTwoDecimalPlaces(item.data.price_change_percentage_24h.usd)}`
 										: ` ${roundToTwoDecimalPlaces(item.data.price_change_percentage_24h.usd)}`}
 									%
-								</StyledSpan>
-							</StyledParagraph>
-							<StyledPriceParagraph>{handleBiggerValues(item.data.price)} USD</StyledPriceParagraph>
-						</CoinContainer>
+								</Typography>
+							</Typography>
+							<Typography fontWeight='600' fontSize='1.5rem' margin='0'>
+								{handleBiggerValues(item.data.price)} USD
+							</Typography>
+						</Box>
 					</div>
 				);
 			})}
@@ -47,33 +64,3 @@ const Carousel: React.FC<TrendingCoinsData> = ({ coins }) => {
 };
 
 export default Carousel;
-
-const CoinContainer = styled.div`
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	flex-direction: column;
-	padding: 1.25rem 0.5rem;
-	margin: 1rem;
-	background-color: white;
-`;
-
-const StyledImg = styled.img`
-	width: auto;
-	height: 75px;
-	object-fit: cover;
-`;
-
-const StyledParagraph = styled.p`
-	margin: 1.5rem 0 0 0;
-`;
-
-const StyledSpan = styled.span<{ $isPriceChangePositive: boolean }>`
-	color: ${({ $isPriceChangePositive }) => ($isPriceChangePositive ? 'green' : 'red')};
-`;
-
-const StyledPriceParagraph = styled.p`
-	font-weight: 600;
-	font-size: 1.5rem;
-	margin: 0;
-`;

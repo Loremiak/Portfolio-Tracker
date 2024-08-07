@@ -1,55 +1,5 @@
-// import { Box, Button, Modal, TextField, Typography } from '@mui/material';
-// import { GridRowId } from '@mui/x-data-grid';
-// import React from 'react';
-// import styled from 'styled-components';
-
-// type PortfolioHandleModalProps = {
-// 	open: boolean;
-// 	onClose: () => void;
-// 	name: string | GridRowId;
-// 	onSubmit: () => void;
-// };
-
-// const PortfolioHandleModal: React.FC<PortfolioHandleModalProps> = ({ open, onClose, name, onSubmit }) => {
-// 	return (
-// 		<Modal open={open} onClose={onClose} aria-labelledby='modal-modal-title' aria-describedby='modal-modal-description'>
-// 			<PortfolioHandleModalContainer>
-// 				<Typography variant='h5' color='black'>
-// 					Dodaj transakcję {name}
-// 				</Typography>
-// 				<StyledContainer>
-// 					<TextField margin='normal' required id='amount' label='Ilość' name='amount' />
-// 					<TextField margin='normal' required id='price' label='Cena' name='price' />
-// 					<Button variant='contained' onSubmit={onSubmit}>
-// 						dodaj transakcję{' '}
-// 					</Button>
-// 				</StyledContainer>
-// 			</PortfolioHandleModalContainer>
-// 		</Modal>
-// 	);
-// };
-
-// export default PortfolioHandleModal;
-
-// const PortfolioHandleModalContainer = styled(Box)`
-// 	position: absolute;
-// 	top: 50%;
-// 	left: 50%;
-// 	transform: translate(-50%, -50%);
-// 	width: 600px;
-// 	border: 2px solid black;
-// 	padding: 3rem;
-// 	background-color: white;
-// `;
-
-// const StyledContainer = styled(Box)`
-// 	display: flex;
-// 	flex-direction: column;
-// `;
-
 import React, { useState } from 'react';
 import { Modal, Box, TextField, Button, Typography } from '@mui/material';
-import styled from 'styled-components';
 
 interface PortfolioHandleModal {
 	open: boolean;
@@ -78,8 +28,18 @@ const PortfolioHandleModal: React.FC<PortfolioHandleModal> = ({ open, onClose, o
 
 	return (
 		<Modal open={open} onClose={onClose}>
-			<StyledBox>
-				<Container>
+			<Box
+				position='absolute'
+				top='50%'
+				left='50%'
+				bgcolor='white'
+				padding='2rem'
+				boxShadow='24px'
+				borderRadius='8px'
+				sx={{
+					transform: 'translate(-50%, -50%)',
+				}}>
+				<Box display='flex' flexDirection='column' gap='1rem'>
 					<Typography variant='h5'>Dodaj transakcję dla waluty {coin}</Typography>
 					<TextField
 						label='Ilość'
@@ -98,27 +58,10 @@ const PortfolioHandleModal: React.FC<PortfolioHandleModal> = ({ open, onClose, o
 						disabled={!amount || !price || amount < 0 || price < 0}>
 						Dodaj
 					</Button>
-				</Container>
-			</StyledBox>
+				</Box>
+			</Box>
 		</Modal>
 	);
 };
-
-const StyledBox = styled(Box)`
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	background-color: white;
-	padding: 2rem;
-	box-shadow: 24px;
-	border-radius: 8px;
-`;
-
-const Container = styled.div`
-	display: flex;
-	flex-direction: column;
-	gap: 1rem;
-`;
 
 export default PortfolioHandleModal;

@@ -51,6 +51,7 @@ export function useAddOrUpdateTransaction() {
 			queryClient.invalidateQueries({
 				queryKey: ['transactions', userId],
 			});
+			toast.success('Pomyślnie dodano transakcje!');
 		},
 		onError: error => {
 			console.error('Failed to add or update transaction:', error);
@@ -79,9 +80,11 @@ export function useRemoveTransactionsByCoin() {
 			queryClient.invalidateQueries({
 				queryKey: ['transactions', userId],
 			});
+			toast.success(`Pomyślnie usunięto wszystkie transakcje związane z wybraną walutą!`);
 		},
 		onError: error => {
 			console.error('Failed to delete transactions:', error);
+			toast.error(`Wystąpił problem przy usuwaniu transakcji`);
 		},
 	});
 }

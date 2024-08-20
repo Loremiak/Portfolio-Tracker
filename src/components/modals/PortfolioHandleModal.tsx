@@ -1,16 +1,27 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, Box, TextField, Button, Typography } from '@mui/material';
+import { Transaction } from '../../services/types';
+import { DocumentData } from 'firebase/firestore';
 
 interface PortfolioHandleModal {
 	open: boolean;
 	onClose: () => void;
 	onSubmit: (amount: number, price: number) => void;
 	coin: string;
+	currentPrice: number;
+	transaction?: DocumentData | Transaction;
 }
 
-const PortfolioHandleModal: React.FC<PortfolioHandleModal> = ({ open, onClose, onSubmit, coin }) => {
-	const [amount, setAmount] = useState<number>(0);
-	const [price, setPrice] = useState<number>(0);
+const PortfolioHandleModal: React.FC<PortfolioHandleModal> = ({
+	open,
+	onClose,
+	onSubmit,
+	coin,
+	currentPrice,
+	transaction,
+}) => {
+	const [amount, setAmount] = useState<number>(transaction?.amount || 0);
+	const [price, setPrice] = useState<number>(transaction?.price || 0);
 
 	const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setAmount(parseFloat(e.target.value));
@@ -25,6 +36,18 @@ const PortfolioHandleModal: React.FC<PortfolioHandleModal> = ({ open, onClose, o
 		setAmount(0);
 		setPrice(0);
 	};
+
+	useEffect(() => {
+		if (transaction) {
+			setAmount(transaction.amount);
+			setPrice(transaction.price);
+		} else {
+			setAmount(0);
+			setPrice(0);
+		}
+	}, [transaction]);
+
+	console.log('currentPrice', currentPrice);
 
 	return (
 		<Modal open={open} onClose={onClose}>
@@ -49,7 +72,17 @@ const PortfolioHandleModal: React.FC<PortfolioHandleModal> = ({ open, onClose, o
 						fullWidth
 						margin='normal'
 					/>
-					<TextField label='Cena' type='number' value={price} onChange={handlePriceChange} fullWidth margin='normal' />
+					<Box>
+						<TextField
+							label='Cena'
+							type='number'
+							value={price}
+							onChange={handlePriceChange}
+							fullWidth
+							margin='normal'
+						/>
+						<Button onClick={() => setPrice(currentPrice)}>Cena rynkowa</Button>
+					</Box>
 					<Button
 						variant='contained'
 						color='primary'

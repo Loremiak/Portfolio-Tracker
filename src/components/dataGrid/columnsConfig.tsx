@@ -54,7 +54,7 @@ export const createColumns = (
 		renderCell: ({ value }) => <PriceChangeSpan value={value} />,
 	},
 	{ field: 'totalVolume', headerName: 'Wolumen 24h', flex: 1, resizable: false, disableColumnMenu: true },
-	{ field: 'marketCap', headerName: 'Kapitalizacja rynkowa', flex: 1, resizable: false, disableColumnMenu: true },
+	{ field: 'marketCap', headerName: 'Kapitalizacja rynkowa', flex: 2, resizable: false, disableColumnMenu: true },
 	{
 		field: 'totalAmount',
 		headerName: 'Ilość',
@@ -71,7 +71,7 @@ export const createColumns = (
 	},
 	{
 		field: 'addValue',
-		headerName: transactions?.length ? 'Edytuj' : 'Dodaj',
+		headerName: 'Dodaj',
 		flex: 1,
 		resizable: false,
 		disableColumnMenu: true,

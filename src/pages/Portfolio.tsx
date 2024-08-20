@@ -27,8 +27,6 @@ const Portfolio = () => {
 	const addOrUpdateTransaction = useAddOrUpdateTransaction();
 	const removeTransactionsByCoin = useRemoveTransactionsByCoin();
 
-	console.log('portfolioCoinsValue', selectedPortfolioCoins, 'transactionsValue', transactionsValue);
-
 	const onConfirmModal = () => {
 		if (coinsToDelete.length) {
 			removePortfolioCoinsMutation.mutate(coinsToDelete);
@@ -50,8 +48,6 @@ const Portfolio = () => {
 
 	const totalValue = calculateTotalValue({ transactionsValue, portfolioCoins });
 	const totalSpent = calculateTotalSpent(transactionsValue);
-
-	// edit zamiast dodawania
 
 	return (
 		<Box maxWidth='100%' marginBottom='3rem'>

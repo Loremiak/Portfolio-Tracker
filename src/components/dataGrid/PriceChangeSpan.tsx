@@ -1,14 +1,24 @@
 import React from 'react';
-import styled from 'styled-components';
+import { styled } from '@mui/system';
+import Typography from '@mui/material/Typography';
 
-const PriceChangeSpan: React.FC<{ value: number }> = ({ value }) => {
+interface PriceChangeSpanProps {
+	value: number;
+}
+
+const PriceChangeSpan: React.FC<PriceChangeSpanProps> = ({ value }) => {
 	const isPositive = value > 0;
 
-	return <StyledSpan $isPriceChangePositive={isPositive}>{isPositive ? `+${value}` : `${value}`}%</StyledSpan>;
+	return (
+		<StyledTypography $isPriceChangePositive={isPositive}>{isPositive ? `+${value}` : `${value}`}%</StyledTypography>
+	);
 };
 
-const StyledSpan = styled.span<{ $isPriceChangePositive: boolean }>`
-	color: ${({ $isPriceChangePositive }) => ($isPriceChangePositive ? 'green' : 'red')};
-`;
+const StyledTypography = styled(Typography, {
+	shouldForwardProp: prop => prop !== '$isPriceChangePositive',
+})<{ $isPriceChangePositive: boolean }>(({ $isPriceChangePositive }) => ({
+	color: $isPriceChangePositive ? 'green' : 'red',
+	marginTop: '15px',
+}));
 
 export default PriceChangeSpan;

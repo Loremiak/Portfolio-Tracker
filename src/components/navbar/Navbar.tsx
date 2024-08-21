@@ -9,11 +9,7 @@ import { Box } from '@mui/system';
 const Navbar = () => {
 	const { data: globalMarketData, isLoading: isMarketDataLoading } = useGlobalMarketData();
 
-	console.log(globalMarketData);
-
 	const { isAuthenticated, logout } = useAuth();
-
-	console.log('isAuthenticated', isAuthenticated);
 
 	return (
 		<>

@@ -4,17 +4,14 @@ import { useParams } from 'react-router-dom';
 import { useCoinDetailsInfo, useHistoricalChartData } from '../services/api';
 import StyledChart from '../components/StyledChart';
 import { Box } from '@mui/system';
+import { Typography } from '@mui/material';
 
 const CoinDetails = () => {
 	const { id } = useParams();
 
-	console.log(id);
-
 	const { data: coinDetailsInfo } = useCoinDetailsInfo(id ? id : '');
 
 	const { data: chartData } = useHistoricalChartData(id ? id : '');
-
-	console.log(coinDetailsInfo?.description);
 
 	return (
 		<>
@@ -41,7 +38,7 @@ const CoinDetails = () => {
 				<Box width='65%'>{chartData ? <StyledChart prices={chartData.prices} /> : null}</Box>
 			</Box>
 			<Box display='flex' flexDirection='column' gap='2rem'>
-				<h2>Informację o {coinDetailsInfo ? coinDetailsInfo.name : null}</h2>
+				<Typography variant='h2'>Informację o {coinDetailsInfo ? coinDetailsInfo.name : null}</Typography>
 				<p>{coinDetailsInfo?.description.en}</p>
 			</Box>
 		</>

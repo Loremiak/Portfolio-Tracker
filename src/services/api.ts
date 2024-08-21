@@ -2,15 +2,9 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { ChartData, CoinDetails, Coins, DataMarket, TrendingCoinsData } from './types';
 
-//coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1&sparkline=false
-
-// const BASE_URL = `https://api.coingecko.com/api/v3/ping?x_cg_demo_api_key=${apiKey}`;
-
-// https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&precision=2
 const BASE_URL = 'https://api.coingecko.com/api/v3';
 
 const apiKey = import.meta.env.VITE_APP_API_KEY;
-console.log('apiKey', apiKey);
 
 export function useCryptocurrenciesList(page: number, pageSize: string) {
 	return useQuery({
@@ -35,7 +29,6 @@ export function useCryptocurrenciesListByIds(ids: string[]) {
 	return useQuery({
 		queryKey: ['cryptocurrenciesList', ids],
 		queryFn: async () => {
-			console.log('ids', ids);
 			const { data } = await axios.get<Coins>(`${BASE_URL}/coins/markets`, {
 				params: {
 					x_cg_demo_api_key: apiKey,

@@ -50,8 +50,6 @@ const Portfolio = () => {
 	const totalValue = calculateTotalValue({ transactionsValue, portfolioCoins });
 	const totalSpent = calculateTotalSpent(transactionsValue);
 
-	console.log('transactionsValue', transactionsValue);
-
 	return (
 		<Box maxWidth='100%' marginBottom='3rem'>
 			<Box display='flex' flexDirection='column' gap='1.5rem' margin='2rem 0' padding='1rem' bgcolor='lightblue'>

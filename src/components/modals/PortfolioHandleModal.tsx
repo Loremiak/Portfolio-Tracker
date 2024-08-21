@@ -47,8 +47,6 @@ const PortfolioHandleModal: React.FC<PortfolioHandleModal> = ({
 		}
 	}, [transaction]);
 
-	console.log('currentPrice', currentPrice);
-
 	return (
 		<Modal open={open} onClose={onClose}>
 			<Box

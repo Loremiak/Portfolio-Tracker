@@ -71,7 +71,7 @@ export const createColumns = (
 	},
 	{
 		field: 'addValue',
-		headerName: 'Dodaj',
+		headerName: transactions?.length ? 'Zarządzaj' : 'Dodaj',
 		flex: 1,
 		resizable: false,
 		disableColumnMenu: true,

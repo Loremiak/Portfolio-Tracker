@@ -19,13 +19,17 @@ const Footer = () => {
 					<Logo />
 					<Divider color='#6eacda' />
 					<Typography fontSize='0.9rem' paddingTop='1rem'>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro aliquid adipisci labore ipsum a recusandae
-						perspiciatis nisi. Ipsa iste eligendi, nesciunt non tempora, ex, voluptatum voluptates nobis suscipit
-						placeat corrupti.
+						Portfolio Tracker to aplikacja internetowa do śledzenia i zarządzania portfelem inwestycyjnym. Umożliwia
+						użytkownikom monitorowanie ich inwestycji kryptowalutowych w czasie rzeczywistym. Aplikacja przelicza
+						wartości inwestycji na wybraną walutę (USD), oferując przejrzysty podgląd wartości portfela w postaci
+						wykresów i statystyk. Dzięki intuicyjnemu interfejsowi użytkownicy mogą łatwo analizować swoje inwestycje,
+						śledzić zmiany wartości oraz podejmować świadome decyzje inwestycyjne.
 					</Typography>
 				</Box>
 				<Box display='flex' gap='2rem' flexDirection='column' alignItems='center' marginTop='1rem'>
-					<p>Strony</p>
+					<Typography fontSize='1.25rem' fontWeight='bold'>
+						Strony
+					</Typography>
 					<List
 						sx={{
 							listStyleType: 'none',
@@ -48,7 +52,9 @@ const Footer = () => {
 					</List>
 				</Box>
 				<Box display='flex' gap='2rem' flexDirection='column' alignItems='center' marginTop='1rem'>
-					<p>Społeczność</p>
+					<Typography fontSize='1.25rem' fontWeight='bold'>
+						Społeczność
+					</Typography>
 					<List sx={{ listStyleType: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 						{iconArray.map(icon => (
 							<li key={icon}>

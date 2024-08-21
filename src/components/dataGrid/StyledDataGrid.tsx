@@ -33,8 +33,7 @@ const StyledDataGrid: React.FC<StyledDataGridProps> = ({
 	const [coinToDelete, setCoinToDelete] = useState<string | null>(null);
 	const [selectedTransaction, setSelectedTransaction] = useState<Transaction | DocumentData | undefined>(undefined);
 	const [currentPrice, setCurrentPrice] = useState(0);
-
-	const [selectedCoin, setSelectedCoin] = useState<string>('');
+	const [selectedCoin, setSelectedCoin] = useState('');
 
 	const { isAuthenticated } = useAuth();
 

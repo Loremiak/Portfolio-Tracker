@@ -3,11 +3,12 @@ import { getDoc, doc, updateDoc, collection, getDocs, deleteDoc, setDoc } from '
 import { db } from '../firebase/firebase';
 import useAuth from '../hooks/useAuth';
 import { toast } from 'react-toastify';
+import { Transaction } from './types';
 
 export function useTransactions() {
 	const { userId } = useAuth();
 
-	return useQuery({
+	return useQuery<Transaction[]>({
 		queryKey: ['transactions', userId],
 		queryFn: async () => {
 			if (!userId) {
@@ -16,7 +17,7 @@ export function useTransactions() {
 
 			const transactionsColRef = collection(db, 'users', userId, 'transactions');
 			const querySnapshot = await getDocs(transactionsColRef);
-			return querySnapshot.docs.map(doc => doc.data());
+			return querySnapshot.docs.map(doc => doc.data() as Transaction);
 		},
 		enabled: !!userId,
 	});

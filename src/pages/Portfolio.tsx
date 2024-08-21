@@ -1,6 +1,6 @@
 import StyledDataGrid from '../components/dataGrid/StyledDataGrid';
 import { useCryptocurrenciesListByIds } from '../services/api';
-import { Button, Typography } from '@mui/material';
+import { Button, Divider, Typography } from '@mui/material';
 import { useState } from 'react';
 import ConfirmModal from '../components/modals/ConfirmModal';
 import StyledLink from '../components/StyledLink';
@@ -14,6 +14,7 @@ import {
 	useAddOrUpdateTransaction,
 } from '../services/firebaseApi';
 import { Box } from '@mui/system';
+import PortfolioChart from '../components/PortfolioChart';
 
 const Portfolio = () => {
 	const [coinsToDelete, setCoinsToDelete] = useState<string[]>([]);
@@ -49,6 +50,8 @@ const Portfolio = () => {
 	const totalValue = calculateTotalValue({ transactionsValue, portfolioCoins });
 	const totalSpent = calculateTotalSpent(transactionsValue);
 
+	console.log('transactionsValue', transactionsValue);
+
 	return (
 		<Box maxWidth='100%' marginBottom='3rem'>
 			<Box display='flex' flexDirection='column' gap='1.5rem' margin='2rem 0' padding='1rem' bgcolor='lightblue'>
@@ -62,10 +65,15 @@ const Portfolio = () => {
 			<h1>Twoje portfolio</h1>
 			{portfolioCoins && selectedPortfolioCoins.length > 0 ? (
 				<>
-					<Box display='flex' flexDirection='column' gap='1rem' margin='1rem 0'>
-						<p>Suma wydatków: {totalValue.toFixed(2)} USD</p>
-						<p>Obecne saldo: {totalValue.toFixed(2)} USD</p>
-						<p>Całkowity zysk/strata: {totalValue - totalSpent} USD</p>
+					<Box display='flex' flexDirection='row' gap='1rem' margin='1rem 0'>
+						<Box display='flex' flexDirection='column' justifyContent='center' gap='1rem'>
+							<Typography fontSize='1.25rem'>Suma wydatków: {totalValue.toFixed(2)} USD</Typography>
+							<Divider color='#6eacda' />
+							<Typography fontSize='1.25rem'>
+								Całkowity zysk/strata: {(totalValue - totalSpent).toFixed(2)} USD
+							</Typography>
+						</Box>
+						<PortfolioChart transactions={transactionsValue} />
 					</Box>
 					<Box display='flex' flexDirection='row' gap='2rem'>
 						<Button variant='outlined' disabled={!coinsToDelete.length} onClick={() => setIsConfirmModalOpen(true)}>

@@ -7,7 +7,7 @@ import StyledLink from '../components/StyledLink';
 import { calculateTotalValue } from '../helpers/calculateTotalValue';
 import { calculateTotalSpent } from '../helpers/calculateTotalSpent';
 import {
-	useRemoveTransactionsByCoin,
+	useRemoveTransactionsByCoins,
 	usePortfolioCoins,
 	useTransactions,
 	useRemovePortfolioCoins,
@@ -15,6 +15,7 @@ import {
 } from '../services/firebaseApi';
 import { Box } from '@mui/system';
 import PortfolioChart from '../components/PortfolioChart';
+import { toast } from 'react-toastify';
 
 const Portfolio = () => {
 	const [coinsToDelete, setCoinsToDelete] = useState<string[]>([]);
@@ -26,12 +27,16 @@ const Portfolio = () => {
 
 	const removePortfolioCoinsMutation = useRemovePortfolioCoins();
 	const addOrUpdateTransaction = useAddOrUpdateTransaction();
-	const removeTransactionsByCoin = useRemoveTransactionsByCoin();
+	const removeTransactionsByCoins = useRemoveTransactionsByCoins();
 
 	const onConfirmModal = () => {
 		if (coinsToDelete.length) {
+			removeTransactionsByCoins.mutate(coinsToDelete);
 			removePortfolioCoinsMutation.mutate(coinsToDelete);
-		} else {
+		} else if (portfolioCoins) {
+			const allCoinIds = portfolioCoins.map(coin => coin.id);
+
+			removeTransactionsByCoins.mutate(allCoinIds);
 			removePortfolioCoinsMutation.mutate(undefined);
 		}
 
@@ -44,7 +49,8 @@ const Portfolio = () => {
 	};
 
 	const handleTransactionRemove = (coin: string) => {
-		removeTransactionsByCoin.mutate(coin);
+		removeTransactionsByCoins.mutate([coin]);
+		toast.success(`Pomyślnie usunięto wszystkie transakcje związane z wybraną walutą!`);
 	};
 
 	const totalValue = calculateTotalValue({ transactionsValue, portfolioCoins });

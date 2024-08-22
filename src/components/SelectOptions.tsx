@@ -9,8 +9,8 @@ type SelectOptionsProps = {
 
 const SelectOptions: React.FC<SelectOptionsProps> = ({ pageSize, handleChange }) => {
 	return (
-		<Box minWidth='120px'>
-			<FormControl fullWidth>
+		<Box display='flex' alignItems='center' justifyContent='center'>
+			<FormControl sx={{ width: '120px' }}>
 				<InputLabel id='demo-simple-select-label'>Ilość walut</InputLabel>
 				<Select
 					labelId='demo-simple-select-label'

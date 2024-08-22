@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { getDoc, doc, updateDoc, collection, getDocs, deleteDoc, setDoc } from 'firebase/firestore';
+import { getDoc, doc, updateDoc, collection, getDocs, setDoc, writeBatch } from 'firebase/firestore';
 import { db } from '../firebase/firebase';
 import useAuth from '../hooks/useAuth';
 import { toast } from 'react-toastify';
@@ -60,19 +60,24 @@ export function useAddOrUpdateTransaction() {
 	});
 }
 
-export function useRemoveTransactionsByCoin() {
+export function useRemoveTransactionsByCoins() {
 	const queryClient = useQueryClient();
 	const { userId } = useAuth();
 
 	return useMutation({
-		mutationFn: async (coin: string) => {
+		mutationFn: async (coins: string[]) => {
 			if (!userId) {
 				throw new Error('User not authenticated');
 			}
 
-			const transactionDocRef = doc(db, 'users', userId, 'transactions', coin);
+			const batch = writeBatch(db);
 
-			await deleteDoc(transactionDocRef);
+			coins.forEach(coin => {
+				const transactionDocRef = doc(db, 'users', userId, 'transactions', coin);
+				batch.delete(transactionDocRef);
+			});
+
+			await batch.commit();
 		},
 		onSuccess: () => {
 			if (!userId) {
@@ -81,7 +86,6 @@ export function useRemoveTransactionsByCoin() {
 			queryClient.invalidateQueries({
 				queryKey: ['transactions', userId],
 			});
-			toast.success(`Pomyślnie usunięto wszystkie transakcje związane z wybraną walutą!`);
 		},
 		onError: error => {
 			console.error('Failed to delete transactions:', error);

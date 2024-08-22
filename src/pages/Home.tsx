@@ -61,7 +61,11 @@ const Home = () => {
 						onRowSelectionModelChange={selected => setCoins(selected as string[])}
 						isPortfolioView={false}
 					/>
-					<Box display='flex' justifyContent='center' gap='2rem'>
+					<Box
+						display='flex'
+						justifyContent='center'
+						gap='2rem'
+						flexDirection={{ xs: 'column-reverse', md: 'row', lg: 'row' }}>
 						<Pagination
 							sx={{
 								display: 'flex',

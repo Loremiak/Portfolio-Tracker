@@ -6,6 +6,7 @@ import YouTubeIcon from '../assets/youtube-icon.svg';
 import useAuth from '../hooks/useAuth';
 import StyledLink from './StyledLink';
 import { Box } from '@mui/system';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
 	const { isAuthenticated } = useAuth();
@@ -18,9 +19,9 @@ const Footer = () => {
 				display='flex'
 				justifyContent='space-between'
 				padding='1rem'
-				flexDirection={{ xs: 'column', md: 'row' }} // Zmiana kierunku układu na mniejszych ekranach
+				flexDirection={{ xs: 'column', md: 'row' }}
 				gap={{ xs: '2rem', md: '4rem', lg: '15rem' }}>
-				<Box width='400px'>
+				<Box maxWidth='350px'>
 					<Logo />
 					<Divider color='#6eacda' />
 					<Typography fontSize={{ xs: '0.75rem', sm: '0.8rem', md: '0.9rem' }} paddingTop='1rem'>
@@ -57,7 +58,7 @@ const Footer = () => {
 					</List>
 				</Box>
 				<Box display='flex' gap='2rem' flexDirection='column' alignItems='center' marginTop='1rem'>
-					<Typography fontSize={{ xs: '0.75rem', sm: '1rem', md: '1.25rem' }} fontWeight='bold'>
+					<Typography fontSize='1.25rem' fontWeight='bold'>
 						Społeczność
 					</Typography>
 					<List sx={{ listStyleType: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -69,9 +70,14 @@ const Footer = () => {
 					</List>
 				</Box>
 			</Box>
-			<Typography display='flex' justifyContent='center'>
-				API powered by Coingecko{' '}
-			</Typography>
+			<Box display='flex' justifyContent='center' alignItems='center'>
+				<Typography>API powered by</Typography>
+				<Typography component='span' marginLeft='0.5rem'>
+					<Link to='https://docs.coingecko.com/reference/introduction' target='_blank' rel='noopener noreferrer'>
+						Coingecko
+					</Link>
+				</Typography>
+			</Box>
 		</Box>
 	);
 };

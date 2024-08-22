@@ -63,7 +63,6 @@ const Navbar = () => {
 								<StyledLink
 									linkTo='/login'
 									label='Zaloguj się'
-									color='#021526'
 									fontWeight='bolder'
 									fontSize={{ xs: '0.85rem', sm: '0.85rem', md: '1rem' }}
 								/>

@@ -13,10 +13,11 @@ const MarketDataList: React.FC<{ globalMarketData: GlobalMarketData; isLoading: 
 			sx={{
 				display: 'flex',
 				justifyContent: 'space-between',
+				alignItems: 'center',
 				listStyleType: 'none',
 				padding: '0.5rem',
 				backgroundColor: '#6eacda',
-				height: '38px',
+				fontSize: { xs: '0.6rem', sm: '0.8rem', md: '1.2rem' },
 			}}>
 			<li>
 				Waluty:
@@ -38,6 +39,7 @@ const MarketDataList: React.FC<{ globalMarketData: GlobalMarketData; isLoading: 
 				<Typography
 					component='span'
 					fontWeight='bold'
+					fontSize={{ xs: '0.6rem', sm: '0.8rem', md: '1.2rem' }}
 					color={globalMarketData.market_cap_change_percentage_24h_usd > 0 ? 'green' : 'red'}>
 					{' '}
 					{isLoading ? (

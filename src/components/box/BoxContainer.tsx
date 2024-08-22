@@ -30,7 +30,7 @@ const BoxContainer: React.FC<{
 					</>
 				)}
 			</Box>
-			<Box border='2px solid #6eacda' flex='2' maxWidth='900px' padding='1rem'>
+			<Box border='2px solid #6eacda' flex='2' maxWidth='900px' padding='1rem' overflow='hidden'>
 				{isCarouselDataLoading ? (
 					<Box width='100%' height='100%' display='flex' alignItems='center' justifyContent='center'>
 						<CircularProgress size='200px' />

@@ -18,19 +18,21 @@ const BasicInfoBox = ({ value, information, marketCapPercent }: BoxProps) => {
 			padding='1rem'
 			height='100%'
 			bgcolor='white'>
-			<p>{formatNumber(value)} USD</p>
-			<p>
-				<Typography
-					component='span'
-					fontWeight='bold'
-					color={Number(marketCapPercent) > 0 ? 'green' : 'red'}></Typography>
+			<Typography component='p' fontSize={{ xs: '0.85rem', sm: '1rem', md: '1.25rem' }}>
+				{formatNumber(value)} USD
+			</Typography>
+			<Typography component='p' fontSize={{ xs: '0.85rem', sm: '1rem', md: '1.15rem' }}>
 				<span>{information} </span>
 				{marketCapPercent ? (
-					<Typography component='span' fontWeight='bold' color={Number(marketCapPercent) > 0 ? 'green' : 'red'}>
-						{marketCapPercent}%
+					<Typography
+						component='span'
+						fontWeight='bold'
+						color={Number(marketCapPercent) > 0 ? 'green' : 'red'}
+						fontSize={{ xs: '0.85rem', sm: '1rem', md: '1.15rem' }}>
+						{Number(marketCapPercent) > 0 ? `+${marketCapPercent}` : marketCapPercent}%
 					</Typography>
 				) : null}
-			</p>
+			</Typography>
 		</Box>
 	);
 };

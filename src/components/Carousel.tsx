@@ -18,6 +18,20 @@ const Carousel: React.FC<TrendingCoinsData> = ({ coins }) => {
 		autoplaySpeed: 1000,
 		pauseOnHover: true,
 		arrows: false,
+		responsive: [
+			{
+				breakpoint: 1024,
+				settings: {
+					slidesToShow: 2,
+				},
+			},
+			{
+				breakpoint: 600,
+				settings: {
+					slidesToShow: 1,
+				},
+			},
+		],
 	};
 
 	return (
@@ -34,7 +48,8 @@ const Carousel: React.FC<TrendingCoinsData> = ({ coins }) => {
 							flexDirection='column'
 							padding='1.25rem 0.5rem'
 							margin='1rem'
-							bgcolor='white'>
+							bgcolor='white'
+							maxWidth='250px'>
 							<Box
 								component='img'
 								src={item.large}
@@ -52,7 +67,7 @@ const Carousel: React.FC<TrendingCoinsData> = ({ coins }) => {
 									%
 								</Typography>
 							</Typography>
-							<Typography fontWeight='600' fontSize='1.5rem' margin='0'>
+							<Typography fontWeight='600' fontSize={{ xs: '0.85rem', sm: '1rem', md: '1.25rem' }} margin='0'>
 								{handleBiggerValues(item.data.price)} USD
 							</Typography>
 						</Box>

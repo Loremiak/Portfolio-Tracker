@@ -14,11 +14,16 @@ const Footer = () => {
 
 	return (
 		<Box padding='1rem' marginTop='3rem' width='100%' border='2px solid #6eacda'>
-			<Box display='flex' justifyContent='space-between' padding='1rem' gap='15rem'>
+			<Box
+				display='flex'
+				justifyContent='space-between'
+				padding='1rem'
+				flexDirection={{ xs: 'column', md: 'row' }} // Zmiana kierunku układu na mniejszych ekranach
+				gap={{ xs: '2rem', md: '4rem', lg: '15rem' }}>
 				<Box width='400px'>
 					<Logo />
 					<Divider color='#6eacda' />
-					<Typography fontSize='0.9rem' paddingTop='1rem'>
+					<Typography fontSize={{ xs: '0.75rem', sm: '0.8rem', md: '0.9rem' }} paddingTop='1rem'>
 						Portfolio Tracker to aplikacja internetowa do śledzenia i zarządzania portfelem inwestycyjnym. Umożliwia
 						użytkownikom monitorowanie ich inwestycji kryptowalutowych w czasie rzeczywistym. Aplikacja przelicza
 						wartości inwestycji na wybraną walutę (USD), oferując przejrzysty podgląd wartości portfela w postaci
@@ -52,7 +57,7 @@ const Footer = () => {
 					</List>
 				</Box>
 				<Box display='flex' gap='2rem' flexDirection='column' alignItems='center' marginTop='1rem'>
-					<Typography fontSize='1.25rem' fontWeight='bold'>
+					<Typography fontSize={{ xs: '0.75rem', sm: '1rem', md: '1.25rem' }} fontWeight='bold'>
 						Społeczność
 					</Typography>
 					<List sx={{ listStyleType: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>

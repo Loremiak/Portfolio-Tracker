@@ -1,7 +1,6 @@
 import { GridColDef } from '@mui/x-data-grid';
-import { Button } from '@mui/material';
+import { Button, Typography } from '@mui/material';
 import { Transaction } from '../../services/types';
-import PriceChangeSpan from './PriceChangeSpan';
 import { Box } from '@mui/system';
 import StyledLink from '../StyledLink';
 import { DocumentData } from 'firebase/firestore';
@@ -51,7 +50,11 @@ export const createColumns = (
 		flex: 1,
 		resizable: false,
 		disableColumnMenu: true,
-		renderCell: ({ value }) => <PriceChangeSpan value={value} />,
+		renderCell: ({ value }) => (
+			<Typography component='span' color={value > 0 ? 'green' : 'red'}>
+				{value > 0 ? `+${value}` : `${value}`}%
+			</Typography>
+		),
 	},
 	{ field: 'totalVolume', headerName: 'Wolumen 24h', flex: 1, resizable: false, disableColumnMenu: true },
 	{ field: 'marketCap', headerName: 'Kapitalizacja rynkowa', flex: 2, resizable: false, disableColumnMenu: true },

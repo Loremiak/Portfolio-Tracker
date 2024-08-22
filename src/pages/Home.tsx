@@ -30,7 +30,7 @@ const Home = () => {
 	return (
 		<div>
 			<Box margin='4rem 0'>
-				<Typography variant='h1' fontSize='2rem' marginBottom='0.75rem'>
+				<Typography variant='h1' fontSize={{ xs: '1.4rem', sm: '1.8rem', md: '2rem' }} marginBottom='0.75rem'>
 					Ceny kryptowalut według kapitalizacji rynkowej
 				</Typography>
 				<Divider sx={{ borderBottomWidth: 2 }} color='#6eacda' />

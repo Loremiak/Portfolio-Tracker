@@ -20,7 +20,7 @@ const Navbar = () => {
 				justifyContent='space-between'
 				bgcolor='#eeeeee'
 				height='80px'
-				paddingRight='4rem'
+				paddingRight={{ xs: '0.5rem', sm: '0.5rem', md: '4rem' }}
 				borderLeft='2px solid #6eacda'
 				borderRight='2px solid #6eacda'>
 				<Logo />
@@ -29,24 +29,44 @@ const Navbar = () => {
 						sx={{
 							display: 'flex',
 							alignItems: 'center',
-							gap: '4rem',
+							gap: { xs: '1rem', sm: '2rem', md: '4rem' },
 							listStyleType: 'none',
 						}}>
 						<li>
-							<StyledLink label='Strona główna' fontWeight='bolder' />
+							<StyledLink
+								label='Strona główna'
+								fontWeight='bolder'
+								fontSize={{ xs: '0.85rem', sm: '0.85rem', md: '1rem' }}
+							/>
 						</li>
 						{isAuthenticated ? (
 							<li>
-								<StyledLink linkTo='/portfolio' label='Portfolio' fontWeight='bolder' />
+								<StyledLink
+									linkTo='/portfolio'
+									label='Portfolio'
+									fontWeight='bolder'
+									fontSize={{ xs: '0.85rem', sm: '0.85rem', md: '1rem' }}
+								/>
 							</li>
 						) : null}
 						<li>
 							{isAuthenticated ? (
 								<Button onClick={logout} variant='contained' color='error'>
-									<StyledLink label='Wyloguj się' color='#E2E2B6' fontWeight='bolder' fontSize='0.75rem' />
+									<StyledLink
+										label='Wyloguj się'
+										color='#E2E2B6'
+										fontWeight='bolder'
+										fontSize={{ xs: '0.5rem', sm: '0.5rem', md: '0.75rem' }}
+									/>
 								</Button>
 							) : (
-								<StyledLink linkTo='/login' label='Zaloguj się' color='#021526' fontWeight='bolder' />
+								<StyledLink
+									linkTo='/login'
+									label='Zaloguj się'
+									color='#021526'
+									fontWeight='bolder'
+									fontSize={{ xs: '0.85rem', sm: '0.85rem', md: '1rem' }}
+								/>
 							)}
 						</li>
 					</List>

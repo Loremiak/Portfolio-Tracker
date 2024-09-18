@@ -22,7 +22,7 @@ export const ResetPassword = () => {
 	};
 
 	return (
-		<Box display='flex' justifyContent='center' height='100vh' alignItems='center' bgcolor='white'>
+		<Box display='flex' justifyContent='center' height='100vh' alignItems='center'>
 			<Box
 				onSubmit={onFormSubmit}
 				component='form'
@@ -46,9 +46,7 @@ export const ResetPassword = () => {
 					autoComplete='email'
 					autoFocus
 					defaultValue={'test@gmail.com'}
-					onChange={e => {
-						setEmail(e.target.value);
-					}}
+					onChange={e => setEmail(e.target.value)}
 				/>
 				<Box display='flex' gap='1rem' alignItems='center'>
 					<StyledLink linkTo='/login' label='Powrót' color='#03346E' />

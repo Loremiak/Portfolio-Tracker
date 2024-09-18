@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom';
 import { useCoinDetailsInfo, useHistoricalChartData } from '../services/api';
 import StyledChart from '../components/StyledChart';
 import { Box } from '@mui/system';
-import { Typography } from '@mui/material';
 
 const CoinDetails = () => {
 	const { id } = useParams();
@@ -36,10 +35,6 @@ const CoinDetails = () => {
 					) : null}
 				</Box>
 				<Box width='65%'>{chartData ? <StyledChart prices={chartData.prices} /> : null}</Box>
-			</Box>
-			<Box display='flex' flexDirection='column' gap='2rem'>
-				<Typography variant='h2'>Informację o {coinDetailsInfo ? coinDetailsInfo.name : null}</Typography>
-				<p>{coinDetailsInfo?.description.en}</p>
 			</Box>
 		</>
 	);

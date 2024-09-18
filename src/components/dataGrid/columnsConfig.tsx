@@ -4,6 +4,8 @@ import { Transaction } from '../../services/types';
 import { Box } from '@mui/system';
 import StyledLink from '../StyledLink';
 import { DocumentData } from 'firebase/firestore';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 
 export const createColumns = (
 	handleAddButtonClick: (rowId: string) => void,
@@ -42,7 +44,7 @@ export const createColumns = (
 		field: 'currentPrice',
 		headerName: 'Kurs',
 		flex: 1,
-		minWidth: 100,
+		minWidth: 140,
 		resizable: false,
 		disableColumnMenu: true,
 	},
@@ -86,13 +88,13 @@ export const createColumns = (
 		field: 'currentValue',
 		headerName: 'Wartość',
 		flex: 1,
-		minWidth: 100,
+		minWidth: 140,
 		resizable: false,
 		disableColumnMenu: true,
 	},
 	{
 		field: 'addValue',
-		headerName: transactions?.length ? 'Zarządzaj' : 'Dodaj',
+		headerName: 'Zarządzaj',
 		flex: 1,
 		minWidth: 100,
 		resizable: false,
@@ -103,11 +105,12 @@ export const createColumns = (
 				<Button
 					sx={{
 						minWidth: '40px',
+						marginLeft: '10px',
 					}}
 					onClick={() => {
 						handleAddButtonClick(row.id);
 					}}>
-					+
+					<EditIcon />
 				</Button>
 			);
 		},
@@ -134,7 +137,7 @@ export const createColumns = (
 						}
 					}}
 					disabled={!transaction || transaction.amount <= 0}>
-					-
+					<DeleteIcon color='error' />
 				</Button>
 			);
 		},

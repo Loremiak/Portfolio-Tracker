@@ -61,7 +61,7 @@ const PortfolioHandleModal: React.FC<PortfolioHandleModal> = ({
 					transform: 'translate(-50%, -50%)',
 				}}>
 				<Box display='flex' flexDirection='column' gap='1rem'>
-					<Typography variant='h5'>Dodaj transakcję dla waluty {coin}</Typography>
+					<Typography variant='h5'>Zarządzaj transakcjami dla waluty {coin}</Typography>
 					<TextField
 						label='Ilość'
 						type='number'

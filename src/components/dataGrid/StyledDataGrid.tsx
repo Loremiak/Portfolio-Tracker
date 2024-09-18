@@ -78,7 +78,7 @@ const StyledDataGrid: React.FC<StyledDataGridProps> = ({
 			<ConfirmModal
 				open={openConfirmationModal}
 				onClose={() => setOpenConfirmationModal(false)}
-				title='Czy na pewno chcesz usunąć tę transakcję?'
+				title='Czy na pewno chcesz usunąć tą transakcję?'
 				onConfirm={() => {
 					if (coinToDelete && onTransactionRemove) {
 						onTransactionRemove(coinToDelete);

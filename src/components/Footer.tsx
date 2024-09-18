@@ -1,8 +1,5 @@
 import Logo from './Logo';
 import { Divider, List, Typography } from '@mui/material';
-import FacebookIcon from '../assets/facebook-icon.svg';
-import TwitterIcon from '../assets/twitter-icon.svg';
-import YouTubeIcon from '../assets/youtube-icon.svg';
 import useAuth from '../hooks/useAuth';
 import StyledLink from './StyledLink';
 import { Box } from '@mui/system';
@@ -10,8 +7,6 @@ import { Link } from 'react-router-dom';
 
 const Footer = () => {
 	const { isAuthenticated } = useAuth();
-
-	const iconArray = [FacebookIcon, TwitterIcon, YouTubeIcon];
 
 	return (
 		<Box padding='1rem' marginTop='3rem' width='100%' border='2px solid #6eacda'>
@@ -21,7 +16,7 @@ const Footer = () => {
 				padding='1rem'
 				flexDirection={{ xs: 'column', md: 'row' }}
 				gap={{ xs: '2rem', md: '4rem', lg: '15rem' }}>
-				<Box maxWidth='350px'>
+				<Box maxWidth='750px'>
 					<Logo />
 					<Divider color='#6eacda' />
 					<Typography fontSize={{ xs: '0.75rem', sm: '0.8rem', md: '0.9rem' }} paddingTop='1rem'>
@@ -55,18 +50,6 @@ const Footer = () => {
 								<StyledLink linkTo='/login' label='Zaloguj się' />
 							)}
 						</li>
-					</List>
-				</Box>
-				<Box display='flex' gap='2rem' flexDirection='column' alignItems='center' marginTop='1rem'>
-					<Typography fontSize='1.25rem' fontWeight='bold'>
-						Społeczność
-					</Typography>
-					<List sx={{ listStyleType: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-						{iconArray.map(icon => (
-							<li key={icon}>
-								<img src={icon} alt='Community icons' />
-							</li>
-						))}
 					</List>
 				</Box>
 			</Box>

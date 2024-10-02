@@ -33,7 +33,8 @@ export const ResetPassword = () => {
 				gap='1.5rem'
 				border='1px solid black'
 				padding='2.5rem'
-				width='400px'>
+				width='400px'
+				bgcolor='white'>
 				<Typography variant='h5' align='center'>
 					Zresetuj swoje hasło
 				</Typography>

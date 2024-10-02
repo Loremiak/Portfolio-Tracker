@@ -126,6 +126,8 @@ export const createColumns = (
 		renderCell: ({ row }) => {
 			const transaction = (transactions ? transactions : []).find(t => t.coin === row.id);
 
+			console.log(row.totalAmount);
+
 			return (
 				<Button
 					sx={{
@@ -137,7 +139,7 @@ export const createColumns = (
 						}
 					}}
 					disabled={!transaction || transaction.amount <= 0}>
-					<DeleteIcon color='error' />
+					<DeleteIcon color={row.totalAmount ? 'error' : 'disabled'} />
 				</Button>
 			);
 		},

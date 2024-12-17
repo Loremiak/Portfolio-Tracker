@@ -1,5 +1,5 @@
 const handleBiggerValues = (value: number) => {
-	return value.toLocaleString();
+    return value.toLocaleString();
 };
 
 export default handleBiggerValues;

@@ -52,6 +52,7 @@ const Auth: React.FC<AuthProps> = ({ isLoginForm }) => {
             <Box
                 component="form"
                 onSubmit={onFormSubmit}
+                role="form"
                 position="relative"
                 display="flex"
                 justifyContent="center"
@@ -76,6 +77,7 @@ const Auth: React.FC<AuthProps> = ({ isLoginForm }) => {
                     onChange={(e) => setEmail(e.target.value)}
                 />
                 <TextField
+                    data-testid="password-input"
                     margin="normal"
                     required
                     name="password"
@@ -86,6 +88,7 @@ const Auth: React.FC<AuthProps> = ({ isLoginForm }) => {
                 />
                 {!isLoginForm ? (
                     <TextField
+                        data-testid="confirm-password-input"
                         margin="normal"
                         required
                         name="confirmPassword"
